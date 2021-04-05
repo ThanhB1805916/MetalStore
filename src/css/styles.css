@@ -1,0 +1,463 @@
+/* #region  Form Login */
+
+.lgn-frm {
+    position: relative;
+    top: 10%;
+    margin: auto;
+    margin-bottom: 80px;
+    height: 60%;
+    width: 60%;
+    min-height: 300px;
+    min-width: 340px;
+    max-width: 800px;
+    background-color: #fff;
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Font cho h1 */
+
+.lgn-frm h1 {
+    font-style: italic;
+    font-size: 3rem;
+    padding-top: 12%;
+    padding-bottom: 3%;
+}
+
+.lgn-frm .ico {
+    position: relative;
+    top: 13px;
+    left: 5px;
+    height: 30px;
+    width: 10%;
+}
+
+.lgn-frm .lgn-ipt {
+    padding-right: 5%;
+    padding-bottom: 3%;
+    margin: auto;
+    margin-top: 5%;
+    width: 70%;
+    background-color: #e6e6e6;
+    border-radius: 20px;
+}
+
+.lgn-frm .lgn-ipt input {
+    width: 80%;
+    height: 30px;
+    position: relative;
+    top: 6px;
+    left: 20px;
+    border-style: none;
+    outline: none;
+    background-color: #e6e6e6;
+    font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+    font-weight: 800;
+}
+
+.lgn-frm button {
+    margin: 10%;
+    width: 50%;
+    height: 50px;
+    font-size: 20px;
+}
+
+/* #endregion */
+
+/* #region  Header Thanh điều hướng */
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #ddd;
+    width: 100%;
+    height: 10%;
+    z-index: 100;
+}
+
+.nav-bar {
+    position: absolute;
+    width: 80%;
+    height: 100%;
+    top: 15%;
+    left: 3%;
+}
+
+.nav-bar .ico{
+    height: 50px;
+    width:60px;
+}
+
+.nav-bar-item {
+    position: relative;
+    bottom: 10px;
+    margin-right: 5%;
+    color: grey;
+    font-size: 20px;
+}
+
+a.nav-bar-item {
+    text-decoration: none;
+    /* Bỏ gạch dưới cho link*/
+}
+
+/* Làm nổi bật khi được trỏ vào */
+
+.nav-bar .nav-bar-item:hover {
+    color: aliceblue;
+}
+
+/* Tài khoản */
+
+.usr {
+    position: absolute;
+    top: 15%;
+    height: 50%;
+    right: 2%;
+}
+
+.usr .lg-btn {
+    float: right;
+    margin-left: 3px;
+}
+
+.usr button {
+    border-radius: 5px;
+    color: #fff;
+    background-color: #007bff;
+}
+
+.usr button:hover {
+    font-size: larger;
+}
+
+
+/* Giỏ hàng */
+
+.cart {
+    position: absolute;
+    top: 120%;
+    right: 3%;
+    animation-name: crt-ani;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+.cart .ico {
+    width: 50px;
+    height: 55px;
+    position: relative;
+    box-shadow: 5px 5px grey;
+}
+
+.cart .ico:hover {
+    width: 60px;
+    height: 65px;
+}
+
+@keyframes crt-ani {
+    40% {
+        top: 115%;
+    }
+    60% {
+        top: 120%;
+    }
+    90% {
+        top: 115%;
+    }
+    100% {
+        top: 120%;
+    }
+}
+
+
+/* #endregion */
+
+/* #region  Trang hàng hóa */
+.pro-area{
+    position: relative;
+    margin: auto;
+    min-width: 850px;
+    background-color: white;
+    width: 75%;
+    height: 80%;
+    border-radius: 5px;
+}
+.pro-cont{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 250px); /*4 cột auto là tự chỉnh */
+    gap: 30px 30px;  /*Khoảng trắng giữa dòng và cột là 30px và 10px*/
+}   
+.pro{
+    border: solid 2px black;
+    border-radius: 5px;
+    margin: 15px;
+    width: 102%;
+}
+
+.pro .ico{
+    width: 100%;
+    height: 210px;
+}
+/* #endregion */
+
+/* #region  Điện thoại đặt hàng */
+.phone{
+    position: fixed;
+    right: 10px;
+    bottom: 40px;
+    background-color: #FF2014;
+    font-size: 30px;
+    border-radius: 10px;
+    padding: 7px;
+}
+.phone::after{
+    position: fixed;
+    bottom: 20px;
+    content: "";
+    width: 0; 
+    height: 0; 
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid #FF2014;
+}
+.phone:hover{
+    background-color: red;
+    font-size: 35px;
+}
+.phone div{
+    background-color: #4CAF50;
+    border-radius: 5px;
+}
+.phone img{
+    position: relative;
+    top: 3px;
+    left: 3px;
+}
+
+/* #endregion */
+
+/* #region  Trang thêm hàng hóa */
+.dk{
+    width: 60%;
+    position: relative;
+    left: 25%;
+}
+.dk div{
+    display: grid;
+    grid-template-columns: 30% 1fr;
+} 
+
+.dk div > *{
+    font-size: 25px;
+}
+
+.dk button{
+    font-size: 40px;
+    width: 30%;
+    background-color: green;
+    color: white;
+    border-radius: 10px;
+    margin-bottom: 100px;
+}
+
+.dk div select, #pro_qc, #pro_sl{
+    width: 50%;
+}
+
+@media (max-width: 900px){
+    .dk div > *{
+        font-size: 20px;
+    }
+    .dk button{
+        font-size: 30px;
+    }
+}
+
+/* #endregion */
+
+/* #region  Nút tạo hàng hóa */
+.btn-crt{
+    width: 100%;
+    margin: 40px 0;
+    text-align: left;
+}
+.btn-crt img{
+    background-color: white;
+    border-radius: 50%;
+}
+
+.btn-crt button{
+    position: relative;
+    left: 15%;
+    padding: 10px 20px;
+    font-size: 30px;
+}
+.btn-crt button:hover::after{
+    content: " Thêm hàng hóa mới";
+}
+/* #endregion */
+
+/* #region  Bảng */
+.content-table {
+    width: 90%;
+    border-collapse: collapse;
+    margin: 25px 5%;
+    min-width: 400px;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+}
+
+.content-table, th, td {
+    border: 2px solid black;
+}
+
+.content-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.content-table thead th{
+    padding: 40px;
+}
+
+.content-table th, td {
+    padding: 12px 15px;
+}
+
+.content-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.content-table tbody tr:last-of-type {
+    border-bottom: 2px solid #10aa8b;
+    }
+
+.content-table tbody tr:hover {
+    font-weight: bold;
+    background-color: #08c7a1;
+    color: white;
+}
+
+/* #endregion */
+
+/* #region  Chi tiết */
+.img-dis{
+    width: 600px;
+    border: solid 2px gray;
+    border-radius: 5px;
+}
+.dtl{
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-items: center;
+}
+.dtl div > *{
+    font-weight: 900;
+    font-size: 30px;
+    margin: 40px 0;
+}
+.hdr{
+    margin-bottom: 150px;
+}
+
+@media (max-width: 900px){
+    .dtl{
+        grid-template-columns: auto;
+        justify-items: center;
+    }
+    .img-dis{
+        width: 400px;
+    }
+}
+
+/* #endregion */
+
+*{
+    font-size: 20px;
+}
+
+.btn {
+    color: #fff;
+    background-color: #4CAF50;
+    border-radius: 20px;
+    box-shadow: 5px 3px #666;
+    outline: none;
+    font-family: Montserrat-Bold;
+    text-transform: uppercase;
+}
+
+.btn:hover {
+    background-color: #3e8e41;
+}
+
+.lnk{
+    margin: 50px;
+}
+
+.err {
+    color: red;
+}
+
+/* Header chung */
+.hdr{
+    position: relative;
+    top: 50px;
+    margin-bottom: 10%;
+}       
+
+h1{
+    font-size: 50px; 
+    font-family: sans-serif;
+    color: #FF6600;
+}
+h2{
+    font-size: 40px;
+}
+h3{
+    font-size: 25px;
+}
+
+.btn:focus, .btn:active {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+body {
+    position: relative;
+    /* background: #939393; */
+    background-color:  #CCCCCC;
+}
+
+main {
+    position: relative;
+    height: 100%;
+    text-align: center;
+    margin: 0;
+    margin-top: 100px;
+}
+
+footer {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    /* background-color: lightcoral; */
+
+}
+.txb-lbl {
+    width: 70px;
+    display: inline-block;
+    text-align: left;
+}
+
+.ico {
+    width: 30px;
+    height: 30px;
+}
