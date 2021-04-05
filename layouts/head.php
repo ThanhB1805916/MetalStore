@@ -1,47 +1,47 @@
 <!DOCTYPE html>
 <html lang="vi">
 
-<?php 
+<?php
+    //Mở session
+    if(!isset($_SESSION)) session_start(); 
+
     // Lưu các đường dẫn của các trang
     // Đổi đường dẫn chi cần đổi header
-    $_PATH = [ 
-        "img" => "/src/img",
-        "css" => "/src/css",
+    $_PATH = [
+        "root" => "CT428_WEB/", 
+        "ico" => "src/ico/",
+        "img" => "src/img/",
+        "css" => "src/css/",
         "dao" => "dao/dao.php",
         "footer" => "layouts/footer.php", 
-        "err" => "err.php"
-        // "home" => "index.php",
-        // "manage" => "manage.php",
-        // "create" => "create.php",
-        // "detail" => "detail.php?id=",
-        // "edit" => "edit.php?id=",
-        // "delete" => "delete.php?id="
+        "err" => "layouts/err.php"
     ];
 
     // Thêm khu vực ad
     if(strpos($_SERVER["REQUEST_URI"], "admin"))
     {
-        $_PATH["err"] = "admin/".$_PATH["err"];
+        $_PATH["root"] = $_PATH["root"]."admin/";
+        foreach ($_PATH as $key => $value) {
+            $_PATH[$key] = "../".$value;
+        }
     }
-    // Chọn đường dẫn cho quản lý hàng hóa
-    if(strpos($_SERVER["REQUEST_URI"], "manage_pro"))
+    // Chọn đường dẫn cho các trang quản lý
+    if(strpos($_SERVER["REQUEST_URI"], "manage"))
     {
         foreach ($_PATH as $key => $value) {
-           $_PATH[$key] = "../../".$value;
+           $_PATH[$key] = "../".$value;
         }
     }
 
-    //Mở session
-    if(!isset($_SESSION)) session_start(); 
-    $_SESSION["curDir"] = realpath($_SERVER["DOCUMENT_ROOT"]);
+    // Lưu đường dẫn riêng cho trang err
+    $_SESSION["curDir"] = $_PATH["root"];
 ?>
 
 <head>
     <meta charset="UTF-8">
     <meta name="description" content="Trang đăng nhập vào quản lý bán hàng">
     <meta name="author" content="ThanhB1805916">
-    <!-- rel="shortcut icon" type="image/x-icon" -->
-    <link rel="shortcut icon" type="image/x-icon" href="<?php echo $_PATH["img"];?>/title-ico.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo $_PATH["ico"];?>/title-ico.png" />
     <title><?php echo $title??"Không có tiêu đề"; ?></title>
     <link rel="stylesheet" href="<?php echo $_PATH["css"];?>/styles.css">
     <noscript>

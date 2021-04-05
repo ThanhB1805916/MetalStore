@@ -26,11 +26,11 @@
 <header>
    <!-- Thanh điều hướng -->   
     <nav class="nav-bar">
-        <a class="nav-bar-item" style="bottom: 0;" href="/admin/index.php">
-            <img src="<?php echo $_PATH["img"]??"../src/img"; ?>/home-ico.png" class="ico">   
+        <a class="nav-bar-item" style="bottom: 0;" href="<?php echo "/".$_PATH["root"]."index.php"; ?>">
+            <img src="<?php echo $_PATH["ico"]; ?>/home-ico.png" class="ico">   
         </a>
-        <a class="nav-bar-item" href="<?php echo "/admin/index.php"?>" style="font-size:35px">Trang chủ</a>
-        <a class="nav-bar-item" href="<?php echo "/admin/manage_pro/manage.php";?>">Quản lý hàng hóa</a>
+        <a class="nav-bar-item" href="<?php echo "/".$_PATH["root"]."index.php"; ?>" style="font-size:35px">Trang chủ</a>
+        <a class="nav-bar-item" href="<?php echo "/".$_PATH["root"]."manage_pro/manage.php";?>">Quản lý hàng hóa</a>
     </nav>
         
     <!-- Nút đăng xuất -->

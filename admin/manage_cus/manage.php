@@ -24,7 +24,8 @@
     <tbody>
     <?php 
         include_once $_PATH["dao"];
-        $icon = "<img src=\"".$_PATH["ico"]."/edit-ico.png\" class=\"ico\">";
+        $img = $_PATH["img"];
+        $icon = "<img src=\"$img/edit-ico.png\" class=\"ico\">";
         foreach ($items as $key => $value) {
             echo sprintf(
                 "  
