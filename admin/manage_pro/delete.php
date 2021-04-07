@@ -12,35 +12,51 @@
     }
 
      // Lấy ra hàng hóa theo id
-     $id = $_GET["id"]-1;
-     $item = $items[$id];
+     $id = $_GET["id"];
+     $item = $dao->getItemById($id);
      // Lấy ra hình
-     $img = $_PATH["img"].$item["Location"];
+     $img = $_PATH["img"].$item["MSHH"]."/".$item["Location"];
+?>
+
+<!-- Xử lý POST -->
+<?php
+    if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        // Xóa khỏi CSDL
+        if($dao->deleteItem($item["MSHH"]))
+        {
+            // Xóa xong về trang chủ
+            header("Location: manage.php", true);
+        }
+        else
+        {
+            // Báo lỗi
+            echo "<script>alert('Lỗi vui lòng thử lại');</script>";
+        }
+    }
 ?>
 
 <h1>Xóa hàng hóa</h1>
 
-<div>
-    <hr>
-        <div class="dtl">
-            <img class=img-dis src="<?php echo $img;?>">
-            <div>
-                <div>Tên hàng hóa: <?php echo $item["TenHH"]; ?></div>
-                <div>Tên loại: <?php echo $item["TenLoai"]; ?></div>
-                <div>Quy cách: <?php 
-                    $qc = explode("-",$item["QuyCach"]);
-                    echo $qc[0]." mét - ".$qc[1]." mét<sub>/kg</sub>";
-                ?></div>           
-                <div>Giá: <?php echo $item["Gia"]." vnd"; ?></div> 
-            </div>
-        </div>
+<hr>
+<div class="dtl">
+    <img class=img-dis src="<?php echo $img;?>">
+    <div>
+        <div>Tên hàng hóa: <?php echo $item["TenHH"]; ?></div>
+        <div>Tên loại: <?php echo $item["TenLoai"]; ?></div>
+        <div>Quy cách: <?php 
+            $qc = explode("-",$item["QuyCach"]);
+            echo $qc[0]." mét - ".$qc[1]." mét<sub>/kg</sub>";
+        ?></div>           
+        <div>Giá: <?php echo $item["Gia"]." vnd"; ?></div> 
+    </div>
 </div>
 
 <div style="margin:70px">
     <form method="POST" onsubmit="isValid()">
-        <button class="btn" style="height:50px; background-color:blue" onclick="conf()" type="submit">Xóa hàng hóa</button>
+        <button class="btn btn-2" style="font-size:30px;" onclick="conf()" type="submit">Xóa hàng hóa</button>
     </form>
 </div>
+
 
 <script>
 
@@ -67,17 +83,4 @@
 
 <?php
     require_once $_PATH["footer"];
-?>
-
-
-<!-- Xử lý POST -->
-<?php
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        var_dump($id);
-        var_dump($_POST);
-        $items[$id] = null;
-        var_dump($items);
-        // Xóa xong về trang chủ
-        header("Location: index.php", true);
-    }
 ?>

@@ -16,7 +16,8 @@
      <div class="phone">
         Đặt hàng ngay
         <div>
-           <img class="ico" src="<?php echo $_PATH["ico"]; ?>call-ico.png"> 0123456789
+           <img class="ico" src="<?php echo $_PATH["ico"]; ?>call-ico.png"> 
+           <span style="font-size:30px">0123456789</span>
         </div>
     </div>
 </header>

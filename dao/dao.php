@@ -1,16 +1,21 @@
 <?php 
 class DAO{
 
-    public $servername = "localhost";
-    public $database = "quanlydathang";
-    public $username = "root";
-    public $password = "";
+    public $servername;
+    public $database;
+    public $username;
+    public $password;
     
     // Create connection
     public $cnn;
     
-    public function __construct()
+    public function __construct($servername = "localhost", $username = "root", $password = "", $database = "quanlydathang")
     {
+        $this->servername = $servername; 
+        $this->username = $username;
+        $this->password = $password;
+        $this->database = $database;
+
         $this->cnn = new mysqli($this->servername, $this->username, $this->password, $this->database);
         // Check connection
         if ($this->cnn->connect_error) {
@@ -18,39 +23,114 @@ class DAO{
         }
     }
 
+    // Lấy ra danh sách hàng hóa
     public function getAllItem(){
         $sql = "SELECT hh.*, lhh.TenLoaiHangHoa TenLoai FROM HangHoa hh, LoaiHangHoa lhh
                 WHERE hh.MaLoaiHang = lhh.MaLoaiHangHoa;";
-        $rs = $this->cnn->query($sql);
+        $stmt = $this->cnn->query($sql);
         
         $items = [];
         
-        while($r = $rs->fetch_assoc())
+        while($r = $stmt->fetch_assoc())
         {
-            $r["Location"] = $r["MSHH"]."/".$r["Location"];
             $items[] = $r;
         }
 
         return $items;
     }
+
+    // Lấy ra loại hàng
+    public function getAllItemType(){
+        $sql = "SELECT * FROM LoaiHangHoa;";
+        $stmt = $this->cnn->query($sql);
+
+        $items = [];
+        
+        while($r = $stmt->fetch_assoc())
+        {
+            $items[] = $r;
+        }
+
+        return $items;
+    }
+
+    // Lấy ra hàng hóa theo id
+    public function getItemById($id){
+        $sql = "SELECT hh.*, lhh.TenLoaiHangHoa TenLoai FROM HangHoa hh, LoaiHangHoa lhh
+                WHERE hh.MaLoaiHang = lhh.MaLoaiHangHoa AND hh.MSHH = ?;";
+
+        $stmt = $this->cnn->prepare($sql);
+
+        $stmt->bind_param("i", $id);
+
+
+        if($stmt->execute())
+        {
+            $item = $stmt->get_result()->fetch_assoc();
+        }
+        
+        return $item;
+    }
+
+    // Cập nhật hàng hóa
+    public function updateItem($item){ 
+        $sql = "UPDATE HangHoa
+                    SET TenHH = ?,
+                    MaLoaiHang = ?,
+                    QuyCach = ?,
+                    Gia = ?,
+                    SoLuongHang = ?,
+                    Location = ?,
+                    GhiChu = ?
+                WHERE MSHH = ?
+        ;";
+
+        $stmt = $this->cnn->prepare($sql);
+
+        $stmt->bind_param("sisdissi", $item["TenHH"], $item["MaLoaiHang"], $item["QuyCach"], $item["Gia"],
+                        $item["SoLuongHang"], $item["Location"], $item["GhiChu"], $item["MSHH"]);
+
+        return $stmt->execute();
+    }
+
+    // Thêm hàng hóa
+    public function addItem($item){
+        $sql = "INSERT INTO HangHoa(TenHH, QuyCach, Gia, SoLuongHang, MaLoaiHang, Location, GhiChu) 
+                VALUES(?, ?, ?, ?, ?, ?, ?);";
+
+        $stmt = $this->cnn->prepare($sql);
+
+        $stmt->bind_param("ssdiiss", $item["TenHH"], $item["QuyCach"], $item["Gia"],
+                        $item["SoLuongHang"], $item["MaLoaiHang"], $item["Location"], $item["GhiChu"]);
+
+        return $stmt->execute();
+    }
+
+    // Xóa hàng hóa 
+    public function deleteItem($id){
+        $sql = "DELETE FROM HangHoa WHERE MSHH = ?;";
+
+        $stmt = $this->cnn->prepare($sql);
+
+        $stmt->bind_param("i", $id);
+
+        return $stmt->execute();
+    }
 }
-
-$dao = new DAO();
-
-// var_dump($dao->getAllItem());
-$items = $dao->getAllItem();
-// $rs = $dao->cnn->query("SELECT * FROM usr;");
-// $rS=[];
-// while($r = $rs->fetch_assoc())    
-//     $rS[]=$r;
-// var_dump($rS);   
 
 // Cửa hàng sắt
 // Loại - Tên lấy từ csdl
 // Quy cách chiều dài(mét)-cân nặng(kg)/mét
 // Giá vnd đồng
+$dao = new DAO();
+// var_dump($dao->getItemById("10 OR 1=1 --"));
 
-$types = [
+// $items = $dao->getAllItem();
+// $types = $dao->getAllItemType();
+
+
+/* #region  Dummy */
+$typess = [
     "h" => "Hộp",
     "vu" => "Vuông",
     "i" => "I",
@@ -125,6 +205,15 @@ static $Items = [
         "GhiChu"=>""
     ]
 ];
-?>
+/* #endregion */
+$item = $Items[0];
+$item["MaLoaiHang"] = "1";
+$item["TenHH"] = "Vuông-5";
+$item["Location"] = "h-5x10.jpg";
+$item["Gia"] = 350001;
+// $item["QuyCach"] = "6x3.2";
 
-
+// var_dump($item);
+// var_dump($dao->deleteItem(2));
+// var_dump($dao->addItem($item));
+// var_dump($dao->getItemById(8));

@@ -12,33 +12,50 @@
      }
  
       // Lấy ra sản phẩm theo id
-      $id = $_GET["id"]-1;
-      $item = $items[$id];
+      $id = $_GET["id"];
+      $item = $dao->getItemById($id);
       // Lấy ra hình
-      $img = $_PATH["img"].$item["Location"];
+      $img = $_PATH["img"].$item["MSHH"]."/".$item["Location"];
 ?>
 
 <!-- Xử lý POST -->
 <?php
     if ($_SERVER["REQUEST_METHOD"] === "POST" && strpos($_SERVER['PHP_SELF'], "edit")) {
         // Cập nhật thông tin
-        $items[$id]["TenHH"] = $_POST["TenHH"];
-        $items[$id]["TenLoai"] = $_POST["TenLoai"];
-        $items[$id]["QuyCach"] = $_POST["QuyCach"];
-        $items[$id]["Gia"] = $_POST["Gia"];
-        $items[$id]["SoLuongHang"] = $_POST["SoLuongHang"];
-        $items[$id]["Location"] = $_FILES["Location"]["name"];
-        $items[$id]["GhiChu"] = $_POST["GhiChu"];
-        var_dump($_POST);
-        echo "<br>";
-        var_dump($_FILES);
-        // header("Location: manage_pro.php");
+        $item["TenHH"] = $_POST["TenHH"]??$item["TenHH"];
+        $item["TenLoai"] = $_POST["TenLoai"]??$item["TenLoai"];
+        $item["QuyCach"] = $_POST["QuyCach"]??$item["QuyCach"];
+        $item["Gia"] = $_POST["Gia"]??$item["Gia"];
+        $item["SoLuongHang"] = $_POST["SoLuongHang"]??$item["SoLuongHang"];
+        $item["GhiChu"] = $_POST["GhiChu"]??$item["GhiChu"];
+        
+        //Sửa hình
+        if($_FILES["Location"]["name"] != "")
+        {
+            $des_path = $_PATH["img"].$item["MSHH"]."/";
+            $src_path = $_FILES['Location']['tmp_name'];
+            $des_path = $des_path . basename($_FILES['Location']['name']); 
+            move_uploaded_file($src_path , $des_path);
+            $item["Location"] = $_FILES["Location"]["name"];
+        }
+
+        if($dao->updateItem($item))
+        {
+            echo "<script>alert('Cập nhật thành công');</script>";
+        }
+        else
+        {
+            echo "<script>alert('Lỗi vui lòng thử lại');</script>";
+        }
+
+        // Tải lại trang để nạp lại CSDL
+        header("Refresh: 0");
     }
 ?>
 
 <h1>Chỉnh Sửa Hàng Hóa</h1>
 <hr>
-<!--  enctype="multipart/form-data" Để đọc file trong $_FILE khi post -->
+<!--  enctype="multipart/form-data" Để đọc file trong $_FILES khi post -->
 <form class="dk" enctype="multipart/form-data" method="POST" action="edit.php?id=<?php echo $item["MSHH"];?>" onsubmit="isValid()">
     <div>
         <label>Tên hàng hóa</label>
@@ -50,12 +67,21 @@
         <lable>Loại</lable>
         <select name="TenLoai">
             <?php
-                $Key = array_search($item["TenLoai"], $types);
-                echo sprintf('<option value="%s">%s</option>', $Key, $item["TenLoai"]);
+                // Lấy ra loại của hàng hóa trước
+                $types = $dao->getAllItemType();
                 foreach ($types as $key => $value) {
-                    if($key !== $Key)
+                    if($value["TenLoaiHangHoa"] === $item["TenLoai"])
                     {
-                        echo sprintf('<option value="%s">%s</option>', $key, $value);
+                        echo sprintf('<option value="%s">%s</option>', $value["MaLoaiHangHoa"], $value["TenLoaiHangHoa"]);
+                        break;
+                    }
+                }
+
+                // Lấy các loại còn lại
+                foreach ($types as $key => $value) {
+                    if($value["TenLoaiHangHoa"] !== $item["TenLoai"])
+                    {
+                        echo sprintf('<option value="%s">%s</option>', $value["MaLoaiHangHoa"], $value["TenLoaiHangHoa"]);
                     }
                 }
             ?>
@@ -91,7 +117,7 @@
         <textarea name="GhiChu"><?php echo $item["GhiChu"]; ?></textarea>
     </div>
     <p class="err">&nbsp</p>
-    <button class="btn" type="submit">Sửa</button>
+    <button class="btn btn-1" type="submit">Sửa</button>
 </form>
 
 <script>

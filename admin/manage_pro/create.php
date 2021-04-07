@@ -3,12 +3,13 @@
     $path = $_SERVER['DOCUMENT_ROOT']."/CT428_WEB";
     require_once "$path/layouts/header-ad.php";
     require_once $_PATH["dao"];
-    $img = $_PATH["ico"]."/plus-ico.png";
+    $img = $_PATH["ico"]."plus-ico.png";
 ?>
 <h1>Thêm hàng hóa</h1>
 <h3 id="noti" class="err"></h3>
 <hr>
-<form class="dk" method="POST" action="create.php" onsubmit="isValid()">
+<!--  enctype="multipart/form-data" Để đọc file trong $_FILES khi post -->
+<form class="dk" enctype="multipart/form-data" method="POST" action="create.php" onsubmit="isValid()">
     <div>
         <label>Tên hàng hóa</label>
         <input type="text" name="TenHH" id="pro_nam">
@@ -17,10 +18,12 @@
     <!-- Loại nên là dropdown box -->
     <div>
         <lable>Loại</lable>
-        <select name="TenLoai">
+        <select name="MaLoaiHang">
             <?php
+                // Lấy ra loại
+                 $types = $dao->getAllItemType();
                 foreach ($types as $key => $value) {
-                    echo sprintf('<option value="%s">%s</option>', $key, $value);
+                    echo sprintf('<option value="%s">%s</option>', $value["MaLoaiHangHoa"], $value["TenLoaiHangHoa"]);
                 }
             ?>
         </select>
@@ -55,7 +58,7 @@
         <textarea name="GhiChu"></textarea>
     </div>
     <p class="err">&nbsp</p>
-    <button type="submit">Thêm</button>
+    <button class="btn btn-1" type="submit">Thêm</button>
 </form>
 
 <script>
@@ -161,6 +164,7 @@
     if ($_SERVER["REQUEST_METHOD"] === "POST" && strpos($_SERVER['PHP_SELF'], "create") && isset($_POST)) {
 
         $exist = false;
+        $items = $dao->getAllItem();
         foreach ($items as $key => $value) {
             if(strtolower($value["TenHH"]) === strtolower($_POST["TenHH"]))
             {
@@ -173,11 +177,38 @@
         // Kiểm tra không tồn tại mới thêm
         if(!$exist){
             $item = $_POST;
-            $item["MSHH"] = $items[count($items)-1]["MSHH"]+1;
-            $items[] = $item;
-            echo '<script>alert("Thêm thành công");</script>';
+            $item["Location"] = $_FILES["Location"]["name"] != "" ? $_FILES["Location"]["name"] : "plus-ico.png";
+
+            //Thêm hình
+            $id = count($items)+1;
+            $des_path = $_PATH["img"].$id."/";
+            $src_path = $_FILES['Location']['tmp_name'];
+
+             // Tạo thư mục lưu hình
+             if (!file_exists($des_path)) {
+                mkdir($des_path, 0777, true);
+            }
+
+            if($_FILES["Location"]["name"] != "")
+            {
+                $des_path = $des_path . basename($_FILES['Location']['name']); 
+                move_uploaded_file($src_path , $des_path);
+                $item["Location"] = $_FILES["Location"]["name"];
+            }
+            else
+            {
+                // Lấy hình mặc định
+                copy($_PATH["ico"]."plus-ico.png", $des_path."plus-ico.png");
+            }
+            
+            if($dao->addItem($item))
+            {
+                echo "<script>alert('Thêm hàng hóa thành công');</script>";
+            }
+            else
+            {
+                echo "<script>alert('Lỗi vui lòng thử lại');</script>";
+            }
         }
-        
-        var_dump($items);
     }
 ?>

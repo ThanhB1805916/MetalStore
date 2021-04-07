@@ -16,7 +16,7 @@
             <input type="password" id="pwd" name="password" placeholder="Mật khẩu">
         </div>
         <p id="pwd_err" class="err">&nbsp</p>
-        <button type="submit" class="btn"> Đăng nhập </button>
+        <button type="submit" class="btn btn-1"> Đăng nhập </button>
     </form>
 </div>
 

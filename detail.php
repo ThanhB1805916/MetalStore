@@ -3,18 +3,19 @@
     require_once "layouts/header.php";
     require_once $_PATH["dao"];
 
-    // Nếu không có id
-    if(!isset($_GET["id"]))
-    {
-        $err = $_PATH["err"];
-        header("Location: $err", true);
-    }
-
      // Lấy ra hàng hóa theo id
-     $id = $_GET["id"]-1;
-     $item = $items[$id];
+     $id = $_GET["id"];
+     $item =  $dao->getItemById($id);
+
+     // Nếu tồn tại
+     if(!isset($item))
+     {
+         $err = $_PATH["err"];
+         header("Location: $err", true);
+     }
+
      // Lấy ra hình
-     $img = $_PATH["img"].$item["Location"];
+     $img = $_PATH["img"].$item["MSHH"]."/".$item["Location"];
 ?>
 
 <h1>Thông tin chi tiết hàng hóa</h1>

@@ -8,7 +8,10 @@
     <div class="pro-cont">
         <?php 
         include_once $_PATH["dao"];
-        $i = 0;
+        
+        // Lấy ra tất cả hàng hóa
+        $items = $dao->getAllItem();
+
         foreach ($items as $key => $value) {
             echo sprintf( 
             '
@@ -21,7 +24,7 @@
             </div>
             ', 
             $value["MSHH"],  // Lấy id
-            $_PATH["img"].$value["Location"], // Lấy link hình
+            $_PATH["img"].$value["MSHH"]."/".$value["Location"], // Lấy link hình
             $value["TenLoai"], // Lấy tên loại
             $value["MSHH"]); // Lấy id
         }

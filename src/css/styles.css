@@ -253,13 +253,9 @@ a.nav-bar-item {
     font-size: 25px;
 }
 
-.dk button{
+.dk .btn{
     font-size: 40px;
     width: 30%;
-    background-color: green;
-    color: white;
-    border-radius: 10px;
-    margin-bottom: 100px;
 }
 
 .dk div select, #pro_qc, #pro_sl{
@@ -326,6 +322,7 @@ a.nav-bar-item {
 
 .content-table th, td {
     padding: 12px 15px;
+    font-size: 25px;
 }
 
 .content-table tbody tr {
@@ -384,9 +381,9 @@ a.nav-bar-item {
     font-size: 20px;
 }
 
+/* #region  Button */
 .btn {
     color: #fff;
-    background-color: #4CAF50;
     border-radius: 20px;
     box-shadow: 5px 3px #666;
     outline: none;
@@ -394,9 +391,23 @@ a.nav-bar-item {
     text-transform: uppercase;
 }
 
-.btn:hover {
+.btn-1{
+    background-color: #4CAF50;
+}
+
+.btn-1:hover {
     background-color: #3e8e41;
 }
+
+.btn-2{
+    background-color: #007bff;
+}
+
+.btn-2:hover {
+    background-color: hsl(211, 100%, 30%);;
+}
+
+/* #endregion */
 
 .lnk{
     margin: 50px;
@@ -427,8 +438,7 @@ h3{
 
 .btn:focus, .btn:active {
     outline: none !important;
-    box-shadow: none !important;
-  }
+}
 
 body {
     position: relative;

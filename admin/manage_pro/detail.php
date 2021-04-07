@@ -12,10 +12,11 @@
     }
 
      // Lấy ra hàng hóa theo id
-     $id = $_GET["id"]-1;
-     $item = $items[$id];
+     $id = $_GET["id"];
+     $item = $dao->getItemById($id);
+    //  var_dump($item);
      // Lấy ra hình
-     $img = $_PATH["img"].$item["Location"];
+     $img = $_PATH["img"].$item["MSHH"]."/".$item["Location"];
 ?>
 
 <h1>Thông tin chi tiết hàng hóa</h1>
