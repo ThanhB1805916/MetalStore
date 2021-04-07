@@ -15,14 +15,14 @@
      $id = $_GET["id"]-1;
      $item = $items[$id];
      // Lấy ra hình
-     $img = $imgs[$id];
+     $img = $_PATH["img"].$item["Location"];
 ?>
 
 <h1>Thông tin chi tiết hàng hóa</h1>
 <h2 class="hdr" style="color:blue">Tên hàng hóa: <?php echo $item["TenHH"];?> </h2>
 <hr>
     <div class="dtl">
-        <img class=img-dis src="../../<?php echo $img;?>">
+        <img class=img-dis src="<?php echo $img;?>">
         <div>
             <div>Tên hàng hóa: <?php echo $item["TenHH"]; ?></div>
             <div>Tên loại: <?php echo $item["TenLoai"]; ?></div>

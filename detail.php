@@ -14,7 +14,7 @@
      $id = $_GET["id"]-1;
      $item = $items[$id];
      // Lấy ra hình
-     $img = $imgs[$id];
+     $img = $_PATH["img"].$item["Location"];
 ?>
 
 <h1>Thông tin chi tiết hàng hóa</h1>

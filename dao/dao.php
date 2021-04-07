@@ -27,6 +27,7 @@ class DAO{
         
         while($r = $rs->fetch_assoc())
         {
+            $r["Location"] = $r["MSHH"]."/".$r["Location"];
             $items[] = $r;
         }
 
@@ -34,10 +35,10 @@ class DAO{
     }
 }
 
-// $dao = new DAO();
+$dao = new DAO();
 
 // var_dump($dao->getAllItem());
-// $items = $dao->getAllItem();
+$items = $dao->getAllItem();
 // $rs = $dao->cnn->query("SELECT * FROM usr;");
 // $rS=[];
 // while($r = $rs->fetch_assoc())    
@@ -48,15 +49,6 @@ class DAO{
 // Loại - Tên lấy từ csdl
 // Quy cách chiều dài(mét)-cân nặng(kg)/mét
 // Giá vnd đồng
-$imgs = [
-    "src/img/h-5x10.jpg",
-    "src/img/vu-4.jpg",
-    "src/img/i-100.jpg",
-    "src/img/ong-34.jpg",
-    "src/img/v-4.jpg",
-    "src/img/la-3.jpg",
-    "src/img/v-lo.jpg"
-];
 
 $types = [
     "h" => "Hộp",
@@ -68,7 +60,7 @@ $types = [
     "v-l" => "V Lỗ"
 ];
 
-$items = [
+static $Items = [
     [
         "MSHH"=> "1",
         "TenHH"=> "Hộp 5-10",

@@ -7,12 +7,12 @@
     <h3 id="noti" class="err"></h3>
     <form method="POST" onsubmit="isValid()">
         <div class="lgn-ipt">
-            <span><img src="../src/img/eml-ico.png" class="ico"></span>
+            <span><img src="<?php echo $_PATH["ico"]?>eml-ico.png" class="ico"></span>
             <input type="email" id="eml" name="email" placeholder="Email">
         </div>
         <p id="eml_err" class="err">&nbsp</p>
         <div class="lgn-ipt">
-            <span><img src="../src/img/lock-ico.png" class="ico"></span>
+            <span><img src="<?php echo $_PATH["ico"]?>lock-ico.png" class="ico"></span>
             <input type="password" id="pwd" name="password" placeholder="Mật khẩu">
         </div>
         <p id="pwd_err" class="err">&nbsp</p>

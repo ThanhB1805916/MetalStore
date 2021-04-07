@@ -15,7 +15,7 @@
       $id = $_GET["id"]-1;
       $item = $items[$id];
       // Lấy ra hình
-      $img = $imgs[$id];
+      $img = $_PATH["img"].$item["Location"];
 ?>
 
 <!-- Xử lý POST -->
@@ -27,16 +27,19 @@
         $items[$id]["QuyCach"] = $_POST["QuyCach"];
         $items[$id]["Gia"] = $_POST["Gia"];
         $items[$id]["SoLuongHang"] = $_POST["SoLuongHang"];
+        $items[$id]["Location"] = $_FILES["Location"]["name"];
         $items[$id]["GhiChu"] = $_POST["GhiChu"];
         var_dump($_POST);
+        echo "<br>";
+        var_dump($_FILES);
         // header("Location: manage_pro.php");
     }
 ?>
 
 <h1>Chỉnh Sửa Hàng Hóa</h1>
 <hr>
-
-<form class="dk" method="POST" action="edit.php?id=<?php echo $item["MSHH"];?>" onsubmit="isValid()">
+<!--  enctype="multipart/form-data" Để đọc file trong $_FILE khi post -->
+<form class="dk" enctype="multipart/form-data" method="POST" action="edit.php?id=<?php echo $item["MSHH"];?>" onsubmit="isValid()">
     <div>
         <label>Tên hàng hóa</label>
         <input type="text" name="TenHH" id="pro_nam" value="<?php echo $item["TenHH"]; ?>">
@@ -75,6 +78,14 @@
         <input type="number" min="0" name="SoLuongHang" id="pro_sl" value="<?php echo $item["SoLuongHang"]; ?>">
     </div>
     <p id="pro_sl_err" class="err">&nbsp</p>
+    <div>
+        <label>Ảnh</label>
+        <label for="file-input" style="width:0">
+            <img id="myimage" class="img-dis" style="width:200px" src="<?php echo $img;?>">
+        </label>
+        <input name="Location" type="file" style="display:none" id="file-input" accept="image/*" onchange="onFileSelected(event)"/>
+    </div>
+    <p class="err">&nbsp</p>
     <div>
         <label>Ghi chú</label>
         <textarea name="GhiChu"><?php echo $item["GhiChu"]; ?></textarea>

@@ -12,7 +12,9 @@
         "ico" => "src/ico/",
         "img" => "src/img/",
         "css" => "src/css/",
+        "js" => "src/js/",
         "dao" => "dao/dao.php",
+        "layouts" => "layouts/",
         "footer" => "layouts/footer.php", 
         "err" => "layouts/err.php"
     ];
@@ -41,9 +43,10 @@
     <meta charset="UTF-8">
     <meta name="description" content="Trang đăng nhập vào quản lý bán hàng">
     <meta name="author" content="ThanhB1805916">
-    <link rel="shortcut icon" type="image/x-icon" href="<?php echo $_PATH["ico"];?>/title-ico.png" />
+    <link rel="shortcut icon" type="image/x-icon" href="<?php echo $_PATH["ico"];?>title-ico.png" />
     <title><?php echo $title??"Không có tiêu đề"; ?></title>
-    <link rel="stylesheet" href="<?php echo $_PATH["css"];?>/styles.css">
+    <link rel="stylesheet" href="<?php echo $_PATH["css"];?>styles.css">
+    <script src="<?php echo $_PATH["js"];?>scripts.js"></script>
     <noscript>
         <style>
             .need-js, main, header, footer{

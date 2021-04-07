@@ -21,7 +21,7 @@
             </div>
             ', 
             $value["MSHH"],  // Lấy id
-            $imgs[$i++], // Lấy link hình
+            $_PATH["img"].$value["Location"], // Lấy link hình
             $value["TenLoai"], // Lấy tên loại
             $value["MSHH"]); // Lấy id
         }

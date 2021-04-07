@@ -3,6 +3,7 @@
     $path = $_SERVER['DOCUMENT_ROOT']."/CT428_WEB";
     require_once "$path/layouts/header-ad.php";
     require_once $_PATH["dao"];
+    $img = $_PATH["ico"]."/plus-ico.png";
 ?>
 <h1>Thêm hàng hóa</h1>
 <h3 id="noti" class="err"></h3>
@@ -41,6 +42,14 @@
         <input type="number" min="0" name="SoLuongHang" id="pro_sl">
     </div>
     <p id="pro_sl_err" class="err">&nbsp</p>
+    <div>
+        <label>Ảnh</label>
+        <label for="file-input" style="width:0">
+            <img id="myimage" class="img-dis" style="width:200px" src="<?php echo $img;?>">
+        </label>
+        <input name="Location" type="file" style="display:none" id="file-input" accept="image/*" onchange="onFileSelected(event)"/>
+    </div>
+    <p class="err">&nbsp</p>
     <div>
         <label>Ghi chú</label>
         <textarea name="GhiChu"></textarea>

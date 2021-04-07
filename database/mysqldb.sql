@@ -19,6 +19,7 @@ CREATE TABLE HangHoa
 	SoLuongHang INT NOT NULL, -- Số lượng hàng hóa
 	MaLoaiHang INT NOT NULL, -- Mã loại hàng hóa khóa ngoại
 	FOREIGN KEY (MaLoaiHang) REFERENCES LoaiHangHoa(MaLoaiHangHoa),
+	Location VARCHAR(128), -- Lưu địa chỉ hình ảnh
 	GhiChu NVARCHAR(128) -- Ghi chú thêm về hàng hóa
 );
 

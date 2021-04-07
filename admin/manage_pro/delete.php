@@ -15,7 +15,7 @@
      $id = $_GET["id"]-1;
      $item = $items[$id];
      // Lấy ra hình
-     $img = $imgs[$id];
+     $img = $_PATH["img"].$item["Location"];
 ?>
 
 <h1>Xóa hàng hóa</h1>
@@ -23,7 +23,7 @@
 <div>
     <hr>
         <div class="dtl">
-            <img class=img-dis src="../../<?php echo $img;?>">
+            <img class=img-dis src="<?php echo $img;?>">
             <div>
                 <div>Tên hàng hóa: <?php echo $item["TenHH"]; ?></div>
                 <div>Tên loại: <?php echo $item["TenLoai"]; ?></div>
@@ -36,7 +36,7 @@
         </div>
 </div>
 
-<div>
+<div style="margin:70px">
     <form method="POST" onsubmit="isValid()">
         <button class="btn" style="height:50px; background-color:blue" onclick="conf()" type="submit">Xóa hàng hóa</button>
     </form>

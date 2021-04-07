@@ -8,7 +8,7 @@
 
 <div class="btn-crt">
     <a href="create.php">
-        <button class="btn"><img class="ico" src="<?php echo $_PATH["img"]; ?>/plus-ico.png"></button>
+        <button class="btn"><img class="ico" src="<?php echo $_PATH["ico"]; ?>plus-ico.png"></button>
     </a>
 
 </div>
@@ -24,7 +24,7 @@
     <tbody>
     <?php 
         include_once $_PATH["dao"];
-        $icon = "<img src=\"".$_PATH["ico"]."/edit-ico.png\" class=\"ico\">";
+        $icon = "<img src=\"".$_PATH["ico"]."edit-ico.png\" class=\"ico\">";
         foreach ($items as $key => $value) {
             echo sprintf(
                 "  
