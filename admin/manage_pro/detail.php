@@ -3,20 +3,21 @@
     $path = $_SERVER['DOCUMENT_ROOT']."/CT428_WEB";
     require_once "$path/layouts/header-ad.php";
     require_once $_PATH["dao"];
+    $dao = new ItemDAO();
+    
+    // Lấy ra hàng hóa theo id
+    $id = $_GET["id"];
+    $item = $dao->getItemById($id);
 
-    // Nếu không có id
-    if(!isset($_GET["id"]))
+    // Nếu không tồn tại
+    if(!isset($item))
     {
         $err = $_PATH["err"];
         header("Location: $err", true);
     }
 
-     // Lấy ra hàng hóa theo id
-     $id = $_GET["id"];
-     $item = $dao->getItemById($id);
-    //  var_dump($item);
-     // Lấy ra hình
-     $img = $_PATH["img"].$item["MSHH"]."/".$item["Location"];
+    // Lấy ra hình
+    $img = $_PATH["img"].$item["MSHH"]."/".$item["Location"];
 ?>
 
 <h1>Thông tin chi tiết hàng hóa</h1>

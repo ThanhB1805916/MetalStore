@@ -82,12 +82,12 @@ USE Quanlydathang;
 
 -- Trigger kiểm tra số lượng trong chi tiết đặt hàng <= số lượng hàng trong bảng hàng hóa
 DELIMITER $$
-CREATE TRIGGER INSERT_ChiTietDatHang
+CREATE OR REPLACE TRIGGER INSERT_ChiTietDatHang
 BEFORE INSERT ON ChiTietDatHang
 FOR EACH ROW
 BEGIN
 	DECLARE sl_hh INT; -- Số lượng hàng hóa
-	SELECT COUNT(*) INTO sl_hh FROM HangHoa AS HH
+	SELECT HH.SoLuongHang INTO sl_hh FROM HangHoa AS HH
 	WHERE NEW.MSHH = HH.MSHH;
 	
 	IF NEW.SoLuong > sl_hh

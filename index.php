@@ -10,6 +10,7 @@
         include_once $_PATH["dao"];
         
         // Lấy ra tất cả hàng hóa
+        $dao = new ItemDAO();
         $items = $dao->getAllItem();
 
         foreach ($items as $key => $value) {

@@ -37,9 +37,17 @@ VALUES('V4-Lỗ','3-0.5','30000','50','7','v-lo.jpg', '') ;
 INSERT INTO DiaChiKH(DiaChi, MSKH)
 VALUES();
 
+-- Khách hàng
+INSERT INTO KhachHang(HoTenKH, TenCongTy, DiaChi, SoDienThoai, Email)
+VALUES(N'Thanh Vương', 'Cty THHH Thanh Vương', '345 3/2 NK, CT', '123456789', 'thanh@gmail.com');
+INSERT INTO KhachHang(HoTenKH, TenCongTy, DiaChi, SoDienThoai, Email)
+VALUES(N'Alexander Vương', 'Cty THHH Thanh Vương', '345 3/2 NK, CT', '123456788', 'alex@gmail.com');
+
 -- Nhân viên
 INSERT INTO NhanVien(HoTenNV, ChucVu, DiaChi, SoDienThoai)
-VALUES();
+VALUES(N'THANH Vương', 'Quản lý', '733 NTT NK, CT', '123456789');
+INSERT INTO NhanVien(HoTenNV, ChucVu, DiaChi, SoDienThoai)
+VALUES(N'Alex Vương', 'Quản lý', '933 NTT NK, CT', '123456788');
 
 -- Đặt hàng
 INSERT INTO DatHang(MSKH, MSNV)

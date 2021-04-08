@@ -3,6 +3,7 @@
     $path = $_SERVER['DOCUMENT_ROOT']."/CT428_WEB";
     require_once "$path/layouts/header-ad.php";
     require_once $_PATH["dao"];
+    $dao = new ItemDAO();
     $img = $_PATH["ico"]."plus-ico.png";
 ?>
 <h1>Thêm hàng hóa</h1>
@@ -180,7 +181,11 @@
             $item["Location"] = $_FILES["Location"]["name"] != "" ? $_FILES["Location"]["name"] : "plus-ico.png";
 
             //Thêm hình
-            $id = count($items)+1;
+            $rs = $dao->cnn->query("SELECT `AUTO_INCREMENT`
+                                    FROM  INFORMATION_SCHEMA.TABLES
+                                    WHERE TABLE_SCHEMA = 'QuanLyDatHang'
+                                    AND   TABLE_NAME   = 'HangHoa';");
+            $id = $rs->fetch_row()[0];
             $des_path = $_PATH["img"].$id."/";
             $src_path = $_FILES['Location']['tmp_name'];
 

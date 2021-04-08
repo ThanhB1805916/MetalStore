@@ -41,7 +41,7 @@
     }
 ?>
 
-<h1>Xóa hàng hóa</h1>
+<h1>Thông tin hóa đơn</h1>
 
 <hr>
 <div class="dtl">

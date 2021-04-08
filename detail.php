@@ -5,9 +5,10 @@
 
      // Lấy ra hàng hóa theo id
      $id = $_GET["id"];
+     $dao = new ItemDAO();
      $item =  $dao->getItemById($id);
 
-     // Nếu tồn tại
+     // Nếu không tồn tại
      if(!isset($item))
      {
          $err = $_PATH["err"];

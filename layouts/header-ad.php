@@ -31,6 +31,7 @@
         </a>
         <a class="nav-bar-item" href="<?php echo "/".$_PATH["root"]."index.php"; ?>" style="font-size:35px">Trang chủ</a>
         <a class="nav-bar-item" href="<?php echo "/".$_PATH["root"]."manage_pro/manage.php";?>">Quản lý hàng hóa</a>
+        <a class="nav-bar-item" href="<?php echo "/".$_PATH["root"]."manage_dh/manage.php";?>">Quản lý đặt hàng</a>
     </nav>
         
     <!-- Nút đăng xuất -->

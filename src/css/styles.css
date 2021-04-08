@@ -290,9 +290,6 @@ a.nav-bar-item {
     padding: 10px 20px;
     font-size: 30px;
 }
-.btn-crt button:hover::after{
-    content: " Thêm hàng hóa mới";
-}
 /* #endregion */
 
 /* #region  Bảng */

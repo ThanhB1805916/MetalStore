@@ -3,19 +3,21 @@
     $path = $_SERVER['DOCUMENT_ROOT']."/CT428_WEB";
     require_once "$path/layouts/header-ad.php";
     require $_PATH["dao"];
-
-     // Nếu không có id
-     if(!isset($_GET["id"]))
-     {
-         $err = $_PATH["err"];
-         header("Location: $err", true);
-     }
+    $dao = new ItemDAO();
  
-      // Lấy ra sản phẩm theo id
-      $id = $_GET["id"];
-      $item = $dao->getItemById($id);
-      // Lấy ra hình
-      $img = $_PATH["img"].$item["MSHH"]."/".$item["Location"];
+    // Lấy ra sản phẩm theo id
+    $id = $_GET["id"];
+    $item = $dao->getItemById($id);
+
+    // Nếu không tồn tại
+    if(!isset($item))
+    {
+        $err = $_PATH["err"];
+        header("Location: $err", true);
+    }
+
+    // Lấy ra hình
+    $img = $_PATH["img"].$item["MSHH"]."/".$item["Location"];
 ?>
 
 <!-- Xử lý POST -->
