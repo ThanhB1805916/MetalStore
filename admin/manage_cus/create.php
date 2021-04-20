@@ -1,92 +1,30 @@
 <?php
-    $title = "Chỉnh sửa hàng hóa";
+    $title = "Thêm hàng hóa";
     $path = $_SERVER['DOCUMENT_ROOT']."/CT428_WEB";
     require_once "$path/layouts/header-ad.php";
-    require $_PATH["dao"];
+    require_once $_PATH["dao"];
     $dao = new ItemDAO();
- 
-    // Lấy ra sản phẩm theo id
-    $id = $_GET["id"];
-    $item = $dao->getItemById($id);
-
-    // Nếu không tồn tại
-    if(!isset($item))
-    {
-        $err = $_PATH["err"];
-        header("Location: $err", true);
-    }
-
-    // Lấy ra hình
-    $img = $_PATH["img"].$item["MSHH"]."/".$item["Location"];
+    $img = $_PATH["ico"]."plus-ico.png";
 ?>
-
-<!-- Xử lý POST -->
-<?php
-    if ($_SERVER["REQUEST_METHOD"] === "POST" && strpos($_SERVER['PHP_SELF'], "edit")) {
-        // Cập nhật thông tin
-        $item["TenHH"] = $_POST["TenHH"]??$item["TenHH"];
-        $item["TenLoai"] = $_POST["TenLoai"]??$item["TenLoai"];
-        $item["QuyCach"] = $_POST["QuyCach"]??$item["QuyCach"];
-        $item["Gia"] = $_POST["Gia"]??$item["Gia"];
-        $item["SoLuongHang"] = $_POST["SoLuongHang"]??$item["SoLuongHang"];
-        $item["GhiChu"] = $_POST["GhiChu"]??$item["GhiChu"];
-
-        //Sửa hình
-        if($_FILES["Location"]["name"] != "")
-        {
-            $des_path = $_PATH["img"].$item["MSHH"]."/";
-            //Xóa hình cũ
-            unlink($des_path.$item["Location"]);
-            $src_path = $_FILES['Location']['tmp_name'];
-            $des_path = $des_path . basename($_FILES['Location']['name']); 
-            move_uploaded_file($src_path , $des_path);
-            $item["Location"] = $_FILES["Location"]["name"];
-        }
-
-        if($dao->updateItem($item))
-        {
-            echo "<script>alert('Cập nhật thành công');</script>";
-        }
-        else
-        {
-            echo "<script>alert('Lỗi vui lòng thử lại');</script>";
-        }
-
-        // Tải lại trang để nạp lại CSDL
-        header("Refresh: 0");
-    }
-?>
-
-<h1>Chỉnh Sửa Hàng Hóa</h1>
+<h1>Thêm hàng hóa</h1>
+<h3 id="noti" class="err"></h3>
 <hr>
 <!--  enctype="multipart/form-data" Để đọc file trong $_FILES khi post -->
-<form class="dk" enctype="multipart/form-data" method="POST" action="edit.php?id=<?php echo $item["MSHH"];?>" onsubmit="isValid()">
+<form class="dk" enctype="multipart/form-data" method="POST" action="create.php" onsubmit="isValid()">
     <div>
         <label>Tên hàng hóa</label>
-        <input type="text" name="TenHH" id="pro_nam" value="<?php echo $item["TenHH"]; ?>">
+        <input type="text" name="TenHH" id="pro_nam">
     </div>
     <p id="pro_nam_err" class="err">&nbsp</p>
     <!-- Loại nên là dropdown box -->
     <div>
         <lable>Loại</lable>
-        <select name="TenLoai">
+        <select name="MaLoaiHang">
             <?php
-                // Lấy ra loại của hàng hóa trước
-                $types = $dao->getAllItemType();
+                // Lấy ra loại
+                 $types = $dao->getAllItemType();
                 foreach ($types as $key => $value) {
-                    if($value["TenLoaiHangHoa"] === $item["TenLoai"])
-                    {
-                        echo sprintf('<option value="%s">%s</option>', $value["MaLoaiHangHoa"], $value["TenLoaiHangHoa"]);
-                        break;
-                    }
-                }
-
-                // Lấy các loại còn lại
-                foreach ($types as $key => $value) {
-                    if($value["TenLoaiHangHoa"] !== $item["TenLoai"])
-                    {
-                        echo sprintf('<option value="%s">%s</option>', $value["MaLoaiHangHoa"], $value["TenLoaiHangHoa"]);
-                    }
+                    echo sprintf('<option value="%s">%s</option>', $value["MaLoaiHangHoa"], $value["TenLoaiHangHoa"]);
                 }
             ?>
         </select>
@@ -94,18 +32,18 @@
     <p class="err">&nbsp</p>
     <div>
         <label>Quy cách</label>
-        <input type="text" name="QuyCach" id="pro_qc" value="<?php echo $item["QuyCach"]; ?>">
+        <input type="text" name="QuyCach" id="pro_qc">
     </div>
     <p id="pro_qc_err" class="err">&nbsp</p>
     <div>
         <label>Giá</label>
         <!-- min = 0 chỉ cho phép số dương -->
-        <input type="number" min="0" name="Gia" id="pro_g" value="<?php echo $item["Gia"]; ?>">
+        <input type="number" min="0" name="Gia" id="pro_g">
     </div>        
     <p id="pro_g_err" class="err">&nbsp</p>
     <div>
         <label>Số lượng</label>
-        <input type="number" min="0" name="SoLuongHang" id="pro_sl" value="<?php echo $item["SoLuongHang"]; ?>">
+        <input type="number" min="0" name="SoLuongHang" id="pro_sl">
     </div>
     <p id="pro_sl_err" class="err">&nbsp</p>
     <div>
@@ -118,10 +56,10 @@
     <p class="err">&nbsp</p>
     <div>
         <label>Ghi chú</label>
-        <textarea name="GhiChu"><?php echo $item["GhiChu"]; ?></textarea>
+        <textarea name="GhiChu"></textarea>
     </div>
     <p class="err">&nbsp</p>
-    <button class="btn btn-1" type="submit">Sửa</button>
+    <button class="btn btn-1" type="submit">Thêm</button>
 </form>
 
 <script>
@@ -215,9 +153,67 @@
 </script>
 
 <div class="lnk">
-    <a href="delete.php?id=<?php echo $item["MSHH"]; ?>"><h3>Xóa hàng hóa</h3></a>
-    <a href="manage.php"><h3>Về trang quản lý</h3></a>
+<a href="manage.php"><h3>Về trang quản lý</h3></a>
 </div>
+
 <?php
     require_once $_PATH["footer"];
+?>
+
+<!-- Xử lý POST -->
+<?php
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && strpos($_SERVER['PHP_SELF'], "create") && isset($_POST)) {
+
+        $exist = false;
+        $items = $dao->getAllItem();
+        foreach ($items as $key => $value) {
+            if(strtolower($value["TenHH"]) === strtolower($_POST["TenHH"]))
+            {
+                echo '<script>noti.textContent="Hàng hóa đã tồn tại"</script>';
+                $exist=true;
+                break;
+            }
+        }
+
+        // Kiểm tra không tồn tại mới thêm
+        if(!$exist){
+            $item = $_POST;
+            $item["Location"] = $_FILES["Location"]["name"] != "" ? $_FILES["Location"]["name"] : "plus-ico.png";
+
+            //Thêm hình
+            $rs = $dao->cnn->query("SELECT `AUTO_INCREMENT`
+                                    FROM  INFORMATION_SCHEMA.TABLES
+                                    WHERE TABLE_SCHEMA = 'QuanLyDatHang'
+                                    AND   TABLE_NAME   = 'HangHoa';");
+            $id = $rs->fetch_row()[0];
+            $des_path = $_PATH["img"].$id."/";
+            $src_path = $_FILES['Location']['tmp_name'];
+
+             // Tạo thư mục lưu hình
+             if (!file_exists($des_path)) {
+                mkdir($des_path, 0777, true);
+            }
+
+            if($_FILES["Location"]["name"] != "")
+            {
+                $des_path = $des_path . basename($_FILES['Location']['name']); 
+                move_uploaded_file($src_path , $des_path);
+                $item["Location"] = $_FILES["Location"]["name"];
+            }
+            else
+            {
+                // Lấy hình mặc định
+                copy($_PATH["ico"]."plus-ico.png", $des_path."plus-ico.png");
+            }
+            
+            if($dao->addItem($item))
+            {
+                echo "<script>alert('Thêm hàng hóa thành công');</script>";
+            }
+            else
+            {
+                echo "<script>alert('Lỗi vui lòng thử lại');</script>";
+            }
+        }
+    }
 ?>

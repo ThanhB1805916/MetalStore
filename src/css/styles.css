@@ -335,7 +335,6 @@ a.nav-bar-item {
     }
 
 .content-table tbody tr:hover {
-    font-weight: bold;
     background-color: #08c7a1;
     color: white;
 }

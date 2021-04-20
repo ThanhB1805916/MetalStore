@@ -1,0 +1,1 @@
+Nên sử dụng phpmyadmin để insert dữ liệu

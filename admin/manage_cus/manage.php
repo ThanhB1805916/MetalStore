@@ -1,49 +1,44 @@
 <!-- Thêm header -->
 <?php 
-    $title="Quản lý đặt hàng"; 
+    $title="Quản lý khách hàng"; 
     $path = $_SERVER['DOCUMENT_ROOT']."/CT428_WEB";
     require_once "$path/layouts/header-ad.php";
 ?>
-<h1>Quản lý đặt hàng</h1>
-
+<h1>Quản lý khách hàng</h1>
 <style>
     .btn-crt button:hover::after{
-        content: " Thêm hóa đơn";
+        content: " Thêm khách hàng";
     }
-
     h1{
-        color: #000;
-    }
-    table:focus{
-        background-color: red;
+        color: blue;
     }
 </style>
-
 <div class="btn-crt">
     <a href="create.php">
-        <button class="btn btn-2"><img class="ico" src="<?php echo $_PATH["ico"]; ?>plus-ico.png"></button>
+        <button class="btn btn-1"><img class="ico" src="<?php echo $_PATH["ico"]; ?>plus-ico.png"></button>
     </a>
+
 </div>
 <table class="content-table">
     <thead>
         <tr>
-            <th>Họ Tên Khách Hàng</th>
+            <th>Mã số</th>
+            <th>Họ tên</th>
+            <th>Tên công ty</th>
+            <th>Số điện thoại</th>
             <th>Email</th>
-            <th>Số Điện Thoại</th>
-            <th>Tổng Giá</th>
-            <th>Giảm Giá</th>
-            <th>Tên Hàng Hóa</th>
-            <th>Chi Tiết</th>
+            <th>Địa chỉ</th>
+            <th>Chi tiết</th>
         </tr>
     </thead>
     <tbody>
     <?php 
         include_once $_PATH["dao"];
-        $dao = new DatHangDAO();
-        $items = $dao->getDSDatHang();
-        
+        $dao = new KhacHangDAO();
+        $cstmrs = $dao->getDSKhachHang();
+
         $icon = "<img src=\"".$_PATH["ico"]."edit-ico.png\" class=\"ico\">";
-        foreach ($items as $key => $value) {
+        foreach ($cstmrs as $key => $value) {
             echo sprintf(
                 "  
                     <tr onclick=\"window.location='detail.php?id=%s';\">
@@ -53,17 +48,17 @@
                         <td>%s</td>
                         <td>%s</td>
                         <td>%s</td>
-                        <td><a href=\"detail.php?id=%s\">$icon</a></td>
+                        <td><a href=\"edit.php?id=%s\">$icon</a></td>
                     </tr>
                 ",
-            $value["SoDonDH"],
+            $value["MSKH"],
+            $value["MSKH"],
             $value["HoTenKH"],
-            $value["Email"],
+            $value["TenCongTy"],
             $value["SoDienThoai"],
-            $value["GiaDatHang"],
-            $value["GiamGia"],
-            $value["TenHH"],
-            $value["SoDonDH"]
+            $value["Email"],
+            $value["DiaChi"],
+            $value["MSKH"]
             );
         }
     ?>

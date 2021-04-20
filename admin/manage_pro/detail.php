@@ -1,5 +1,5 @@
 <?php
-    $title = "Xóa hàng hóa";
+    $title = "Thông tin hàng hóa";
     $path = $_SERVER['DOCUMENT_ROOT']."/CT428_WEB";
     require_once "$path/layouts/header-ad.php";
     require_once $_PATH["dao"];

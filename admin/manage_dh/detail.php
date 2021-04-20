@@ -24,20 +24,16 @@
 <?php
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Xóa khỏi CSDL
-        // if($dao->deleteItem($item["MSHH"]))
-        // {
-        //     // Xóa thư mục chứa file
-        //     $dirname = $_PATH["img"].$id;
-        //     array_map('unlink', glob("$dirname/*.*"));
-        //     rmdir($dirname);
-        //     // Xóa xong về trang chủ
-        //     header("Location: manage.php", true);
-        // }
-        // else
-        // {
-        //     // Báo lỗi
-        //     echo "<script>alert('Lỗi vui lòng thử lại');</script>";
-        // }
+        if($dao->delDH($id))
+        {
+            // Xóa xong về trang chủ
+            header("Location: manage.php", true);
+        }
+        else
+        {
+            // Báo lỗi
+            echo "<script>alert('Lỗi vui lòng thử lại');</script>";
+        }
     }
 ?>
 <style>

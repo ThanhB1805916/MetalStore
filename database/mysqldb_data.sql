@@ -3,11 +3,11 @@ USE Quanlydathang;
 
 -- Loại hàng hóa
 INSERT INTO LoaiHangHoa (TenLoaiHangHoa) 
-VALUES('Hộp');
+VALUES(N'Hộp');
 INSERT INTO LoaiHangHoa (TenLoaiHangHoa) 
-VALUES('Vuông');
+VALUES(N'Vuông');
 INSERT INTO LoaiHangHoa (TenLoaiHangHoa) 
-VALUES('I');
+VALUES(N'I');
 INSERT INTO LoaiHangHoa (TenLoaiHangHoa) 
 VALUES('Ống');
 INSERT INTO LoaiHangHoa (TenLoaiHangHoa) 
@@ -33,15 +33,17 @@ VALUES('La-3','3-0.7','19000','50','6','la-3.jpg', '') ;
 INSERT INTO HangHoa(TenHH, QuyCach, Gia, SoLuongHang, MaLoaiHang, Location, GhiChu) 
 VALUES('V4-Lỗ','3-0.5','30000','50','7','v-lo.jpg', '') ;
 
+-- Khách hàng
+INSERT INTO KhachHang(HoTenKH, TenCongTy, SoDienThoai, Email)
+VALUES(N'Thanh Vương', 'Cty THHH Thanh Vương', '0123456789', 'thanh@gmail.com');
+INSERT INTO KhachHang(HoTenKH, TenCongTy, SoDienThoai, Email)
+VALUES(N'Alexander Vương', 'Cty THHH Thanh Vương', '0123456788', 'alex@gmail.com');
+
 -- Địa chỉ
 INSERT INTO DiaChiKH(DiaChi, MSKH)
-VALUES();
-
--- Khách hàng
-INSERT INTO KhachHang(HoTenKH, TenCongTy, DiaChi, SoDienThoai, Email)
-VALUES(N'Thanh Vương', 'Cty THHH Thanh Vương', '345 3/2 NK, CT', '123456789', 'thanh@gmail.com');
-INSERT INTO KhachHang(HoTenKH, TenCongTy, DiaChi, SoDienThoai, Email)
-VALUES(N'Alexander Vương', 'Cty THHH Thanh Vương', '345 3/2 NK, CT', '123456788', 'alex@gmail.com');
+VALUES('345 3/2 NK, CT', '1');
+INSERT INTO DiaChiKH(DiaChi, MSKH)
+VALUES('345 3/2 NK, CT', '2');
 
 -- Nhân viên
 INSERT INTO NhanVien(HoTenNV, ChucVu, DiaChi, SoDienThoai)
@@ -51,8 +53,8 @@ VALUES(N'Alex Vương', 'Quản lý', '933 NTT NK, CT', '123456788');
 
 -- Đặt hàng
 INSERT INTO DatHang(MSKH, MSNV)
-VALUES();
+VALUES('1', '1');
 
 -- Chi tiết đặt hàng
-INSERT INTO ChiTietDatHang(SoDonDH, MSHH, GiaDatHang)
-VALUES();
+INSERT INTO ChiTietDatHang(SoDonDH, MSHH, GiaDatHang, GiamGia)
+VALUES('1', '1', '35000000', '0.2');

@@ -29,7 +29,6 @@ CREATE TABLE KhachHang
 	MSKH INT AUTO_INCREMENT PRIMARY KEY, -- Mã khách hàng
 	HoTenKH NVARCHAR(50) NOT NULL, -- Họ tên khách hàng
 	TenCongTy NVARCHAR(30), -- Tên công ty
-	DiaChi NVARCHAR(30) NOT NULL, -- Địa chỉ
 	SoDienThoai CHAR(10) NOT NULL UNIQUE, -- Số điện thoại
 	Email VARCHAR(50) NOT NULL UNIQUE -- Email
 );

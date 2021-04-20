@@ -1,7 +1,6 @@
 <?php
 abstract class DAO
 {
-
     public $servername;
     public $database;
     public $username;
@@ -28,7 +27,6 @@ abstract class DAO
 /* #region  Item DAO */
 class ItemDAO extends DAO
 {
-
     // Lấy ra danh sách hàng hóa
     public function getAllItem()
     {
@@ -145,12 +143,14 @@ class ItemDAO extends DAO
 }
 /* #endregion */
 
+/* #region  Đặt hàng */
 class DatHangDAO extends DAO
 {
     public function getDSDatHang()
     {
         $sql = "SELECT dt.SoDonDH, kh.HoTenKH, kh.Email, kh.SoDienThoai, ct.GiaDatHang, ct.GiamGia, hh.TenHH FROM HangHoa as hh, ChiTietDathang as ct, Dathang as dt, KhachHang as kh
-                WHERE hh.MSHH = ct.MSHH AND ct.SoDonDH = dt.SoDonDH AND dt.MSKH = kh.MSKH;";
+                WHERE hh.MSHH = ct.MSHH AND ct.SoDonDH = dt.SoDonDH AND dt.MSKH = kh.MSKH
+                ORDER BY dt.NgayDH";
         $stmt = $this->cnn->query($sql);
 
         $items = [];
@@ -164,34 +164,95 @@ class DatHangDAO extends DAO
 
     public function getHD($SoDonDH)
     {
-        $sql = "SELECT * FROM LoaiHangHoa as l, HangHoa as hh, ChiTietDathang as ct, Dathang as dt, KhachHang as kh
+        $sql = "SELECT * FROM LoaiHangHoa as l, HangHoa as hh, ChiTietDathang as ct, Dathang as dt, KhachHang as kh, DiaChiKH as dc
                 WHERE l.MaLoaiHangHoa = hh.MaLoaiHang AND hh.MSHH = ct.MSHH AND ct.SoDonDH = dt.SoDonDH AND dt.MSKH = kh.MSKH
-                AND dt.SoDonDH = ?;";
-         $stmt = $this->cnn->prepare($sql);
+                AND kh.MSKH = dc.MSKH AND dt.SoDonDH = ?;";
+        $stmt = $this->cnn->prepare($sql);
 
-         $stmt->bind_param("i", $SoDonDH);
- 
- 
-         if ($stmt->execute()) {
-             $item = $stmt->get_result()->fetch_assoc();
-         }
- 
-         return $item;
+        $stmt->bind_param("i", $SoDonDH);
+
+
+        if ($stmt->execute()) {
+            $item = $stmt->get_result()->fetch_assoc();
+        }
+
+        return $item;
+    }
+
+    public function delDH($SoDonDH)
+    {
+        $sql = "CALL spHuyDatHang(?);";
+        $stmt = $this->cnn->prepare($sql);
+
+        $stmt->bind_param("i", $SoDonDH);
+
+
+        return $stmt->execute();
+    }
+
+    public function creHD($MSKH, $MSNV, $NgayGH, $MSHH, $SoLuongHang, $Gia, $GiamGia){
+        $sql = "CALL spDatHang(?, ?, ?, ?, ?, ?, ?);";
+        $stmt = $this->cnn->prepare($sql);
+
+        $stmt->bind_param("iisiidd", $MSKH, $MSNV, $NgayGH, $MSHH, $SoLuongHang, $Gia, $GiamGia);
+
+        return $stmt->execute();
+    }
+}
+/* #endregion */
+
+/* #region  Khách hàng */
+class KhacHangDAO extends DAO
+{
+    public function getDSKhachHang()
+    {
+        $sql = "SELECT * FROM KhachHang kh, DiaChiKH dc WHERE kh.MSKH = dc.MSKH;";
+        $stmt = $this->cnn->query($sql);
+
+        $cstmrs = [];
+
+        while ($r = $stmt->fetch_assoc()) {
+            $cstmrs[] = $r;
+        }
+
+        return $cstmrs;
+    }
+
+    // public function getKhachHangSDT($SoDienThoai)
+    // {
+    //     $sql = "SELECT * FROM KhachHang kh, DiaChiKH dc WHERE kh.MSKH = dc.MSKH AND kh.SoDienThoai=?";
+    //     $stmt = $this->cnn->prepare($sql);
+    //     $stmt->bind_param("s", $SoDienThoai);
+
+    //     $cstmr = [];
+
+    //     if ($stmt->execute()) {
+    //         $cstmr = $stmt->get_result()->fetch_assoc();
+    //     }
+
+    //     return $cstmr;
+    // }
+
+    public function getKhachHang($MSKH)
+    {
+        $sql = "SELECT * FROM KhachHang kh, DiaChiKH dc WHERE kh.MSKH = dc.MSKH AND kh.MSKH=?";
+        $stmt = $this->cnn->prepare($sql);
+        $stmt->bind_param("i", $MSKH);
+
+        $cstmr = [];
+
+        if ($stmt->execute()) {
+            $cstmr = $stmt->get_result()->fetch_assoc();
+        }
+
+        return $cstmr;
     }
 }
 
-// Cửa hàng sắt
+/* #endregion */ // Cửa hàng sắt
 // Loại - Tên lấy từ csdl
 // Quy cách chiều dài(mét)-cân nặng(kg)/mét
 // Giá vnd đồng
-$dao = new DatHangDAO();
-// var_dump($dao->getDSDatHang());
-// var_dump($dao->getItemById("10 OR 1=1 --"));
-
-// $items = $dao->getAllItem();
-// $types = $dao->getAllItemType();
-/*SELECT kh.HoTenKH, kh.Email, kh.SoDienThoai, ct.GiaDatHang, ct.GiamGia, hh.TenHH FROM HangHoa as hh, ChiTietDathang as ct, Dathang as dt, KhachHang as kh
-WHERE hh.MSHH = ct.MSHH AND ct.SoDonDH = dt.SoDonDH AND dt.MSKH = kh.MSKH;  */
 
 /* #region  Dummy */
 $typess = [

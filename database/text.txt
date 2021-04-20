@@ -1,7 +1,0 @@
-USE QUANLYDATHANG;
-
-INSERT INTO NhanVien(HoTenNV, ChucVu, DiaChi, SoDienThoai) VALUES('Vương Cẩm Thanh', 'admin', '345 Nguyễn Thị Tạo Cần Thơ', '1111111111');
-INSERT INTO NhanVien(HoTenNV, ChucVu, DiaChi, SoDienThoai) VALUES('Alexander Vương', 'nhân viên', '345 Nguyễn Thị Tạo Cần Thơ', '0111111111');
-
-INSERT INTO KhachHang(HoTenKH, TenCongTy, DiaChi, SoDienThoai, Email) VALUES('Thanh Vương', 'Công ty THHH ITCTU', '3/2 Cần Thơ', '2222222222', 'thanh@mail.com');
-INSERT INTO KhachHang(HoTenKH, TenCongTy, DiaChi, SoDienThoai, Email) VALUES('Alexander Vương', 'Công ty THHH ITCTU', '3/2 Cần Thơ', '0222222222', 'alex@mail.com');
