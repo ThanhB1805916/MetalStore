@@ -35,7 +35,7 @@ $item = $items[0];
 <form class="dk" enctype="multipart/form-data" method="POST" action="create.php" onsubmit="isValid()">
     <div>
         <lable>Số điện thoại khách hàng</lable> 
-        <input type="text" style="width: 30%" name="SoDienThoai" id="kh_sdt" minlength="10" maxlength="10" list="sdt_list">
+        <input type="text" style="width: 40%" name="SoDienThoai" id="kh_sdt" minlength="10" maxlength="10" list="sdt_list">
         <datalist id="sdt_list">
             <?php 
                 foreach ($cstmrs as $value) {

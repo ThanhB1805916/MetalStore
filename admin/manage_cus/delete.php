@@ -1,35 +1,28 @@
 <?php
-    $title = "Xóa hàng hóa";
+    $title = "Chi tiết khách hàng";
     $path = $_SERVER['DOCUMENT_ROOT']."/CT428_WEB";
     require_once "$path/layouts/header-ad.php";
     require_once $_PATH["dao"];
-    $dao = new ItemDAO();
-
-    // Lấy ra hàng hóa theo id
+    $dao = new KhacHangDAO();
+    
+    // Lấy ra khách hàng theo id
     $id = $_GET["id"];
-    $item = $dao->getItemById($id);
+    $cst = $dao->getKhachHang($id);
 
     // Nếu không tồn tại
-    if(!isset($item))
+    if(!isset($cst))
     {
         $err = $_PATH["err"];
         header("Location: $err", true);
     }
-
-    // Lấy ra hình
-    $img = $_PATH["img"].$item["MSHH"]."/".$item["Location"];
 ?>
 
 <!-- Xử lý POST -->
 <?php
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Xóa khỏi CSDL
-        if($dao->deleteItem($item["MSHH"]))
+        if($dao->deleteKhachHang($cst["MSKH"]))
         {
-            // Xóa thư mục chứa file
-            $dirname = $_PATH["img"].$id;
-            array_map('unlink', glob("$dirname/*.*"));
-            rmdir($dirname);
             // Xóa xong về trang chủ
             header("Location: manage.php", true);
         }
@@ -41,25 +34,34 @@
     }
 ?>
 
-<h1>Xóa hàng hóa</h1>
+<style>
+    .dtl{
+        display: flow-root;
+    }
+
+    h1{
+        color: blue;
+    }
+</style>
+
+<h1>Xóa khách hàng</h1>
 
 <hr>
-<div class="dtl">
-    <img class=img-dis src="<?php echo $img;?>">
-    <div>
-        <div>Tên hàng hóa: <?php echo $item["TenHH"]; ?></div>
-        <div>Tên loại: <?php echo $item["TenLoai"]; ?></div>
-        <div>Quy cách: <?php 
-            $qc = explode("-",$item["QuyCach"]);
-            echo $qc[0]." mét - ".$qc[1]." mét<sub>/kg</sub>";
-        ?></div>           
-        <div>Giá: <?php echo $item["Gia"]." vnd"; ?></div> 
+    <div class="dtl">
+        <div>
+            <div>Mã khách hàng: <?php echo $cst["MSKH"];?></div>
+            <div>Tên khách hàng: <?php echo $cst["HoTenKH"];?></div>
+            <div>Tên công ty: <?php echo $cst["TenCongTy"];?></div>
+            <div>Số điện thoại: <?php echo $cst["SoDienThoai"];?></div>
+            <div>Email: <?php echo $cst["Email"];?></div>
+            <div>Địa chỉ: <?php echo $cst["DiaChi"];?></div>
+        </div>
     </div>
-</div>
+    
 
 <div style="margin:70px">
     <form method="POST" onsubmit="isValid()">
-        <button class="btn btn-2" style="font-size:30px;" onclick="conf()" type="submit">Xóa hàng hóa</button>
+        <button class="btn btn-2" style="font-size:30px;" onclick="conf()" type="submit">Xóa khách hàng</button>
     </form>
 </div>
 
@@ -70,7 +72,7 @@
     let abort;
     function conf()
     {
-        abort = !confirm("Bạn thật sự muốn xóa hàng hóa");
+        abort = !confirm("Bạn thật sự muốn xóa khách hàng");
     }
 
     function isValid()
@@ -83,7 +85,7 @@
 </script>
 
 <div class="lnk">
-    <a href="edit.php?id=<?php echo $item["MSHH"];?>"><h3>Chỉnh sửa thông tin</h3></a>
+    <a href="edit.php?id=<?php echo $cst["MSKH"];?>"><h3>Chỉnh sửa thông tin</h3></a>
     <a href="manage.php"><h3>Về trang quản lý</h3></a>
 </div>
 

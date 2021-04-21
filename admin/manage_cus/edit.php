@@ -1,49 +1,35 @@
 <?php
-    $title = "Chỉnh sửa hàng hóa";
+    $title = "Chỉnh sửa thông tin khách hàng";
     $path = $_SERVER['DOCUMENT_ROOT']."/CT428_WEB";
     require_once "$path/layouts/header-ad.php";
     require $_PATH["dao"];
-    $dao = new ItemDAO();
+    $dao = new KhacHangDAO();
  
     // Lấy ra sản phẩm theo id
     $id = $_GET["id"];
-    $item = $dao->getItemById($id);
-
+    $cstmrs = $dao->getDSKhachHang();
+    $cst = $cstmrs[$id-1];
     // Nếu không tồn tại
-    if(!isset($item))
+    if(!isset($cst))
     {
         $err = $_PATH["err"];
         header("Location: $err", true);
     }
-
-    // Lấy ra hình
-    $img = $_PATH["img"].$item["MSHH"]."/".$item["Location"];
 ?>
 
 <!-- Xử lý POST -->
 <?php
     if ($_SERVER["REQUEST_METHOD"] === "POST" && strpos($_SERVER['PHP_SELF'], "edit")) {
-        // Cập nhật thông tin
-        $item["TenHH"] = $_POST["TenHH"]??$item["TenHH"];
-        $item["TenLoai"] = $_POST["TenLoai"]??$item["TenLoai"];
-        $item["QuyCach"] = $_POST["QuyCach"]??$item["QuyCach"];
-        $item["Gia"] = $_POST["Gia"]??$item["Gia"];
-        $item["SoLuongHang"] = $_POST["SoLuongHang"]??$item["SoLuongHang"];
-        $item["GhiChu"] = $_POST["GhiChu"]??$item["GhiChu"];
 
-        //Sửa hình
-        if($_FILES["Location"]["name"] != "")
-        {
-            $des_path = $_PATH["img"].$item["MSHH"]."/";
-            //Xóa hình cũ
-            unlink($des_path.$item["Location"]);
-            $src_path = $_FILES['Location']['tmp_name'];
-            $des_path = $des_path . basename($_FILES['Location']['name']); 
-            move_uploaded_file($src_path , $des_path);
-            $item["Location"] = $_FILES["Location"]["name"];
-        }
-
-        if($dao->updateItem($item))
+        //Cập nhật thông tin
+        $cst["MSKH"] = $id;
+        $cst["HoTenKH"] = $_POST["HoTenKH"]??$cst["HoTenKH"];
+        $cst["TenCongTy"] = $_POST["TenCongTy"]??$cst["TenCongTy"];
+        $cst["SoDienThoai"] = $_POST["SoDienThoai"]??$cst["SoDienThoai"];
+        $cst["Email"] = $_POST["Email"]??$cst["Email"];
+        $cst["DiaChi"] = $_POST["DiaChi"]??$cst["DiaChi"];
+        
+        if($dao->updateKhachHang($cst))
         {
             echo "<script>alert('Cập nhật thành công');</script>";
         }
@@ -56,122 +42,110 @@
         header("Refresh: 0");
     }
 ?>
-
-<h1>Chỉnh Sửa Hàng Hóa</h1>
+<style>
+    h1{
+        color: blue;
+    }
+</style>
+<h1>Chỉnh Sửa thông tin khách hàng</h1>
 <hr>
-<!--  enctype="multipart/form-data" Để đọc file trong $_FILES khi post -->
-<form class="dk" enctype="multipart/form-data" method="POST" action="edit.php?id=<?php echo $item["MSHH"];?>" onsubmit="isValid()">
-    <div>
-        <label>Tên hàng hóa</label>
-        <input type="text" name="TenHH" id="pro_nam" value="<?php echo $item["TenHH"]; ?>">
-    </div>
-    <p id="pro_nam_err" class="err">&nbsp</p>
-    <!-- Loại nên là dropdown box -->
-    <div>
-        <lable>Loại</lable>
-        <select name="TenLoai">
-            <?php
-                // Lấy ra loại của hàng hóa trước
-                $types = $dao->getAllItemType();
-                foreach ($types as $key => $value) {
-                    if($value["TenLoaiHangHoa"] === $item["TenLoai"])
-                    {
-                        echo sprintf('<option value="%s">%s</option>', $value["MaLoaiHangHoa"], $value["TenLoaiHangHoa"]);
-                        break;
-                    }
-                }
 
-                // Lấy các loại còn lại
-                foreach ($types as $key => $value) {
-                    if($value["TenLoaiHangHoa"] !== $item["TenLoai"])
-                    {
-                        echo sprintf('<option value="%s">%s</option>', $value["MaLoaiHangHoa"], $value["TenLoaiHangHoa"]);
-                    }
+<form class="dk" method="POST" action="edit.php?id=<?php echo $cst["MSKH"];?>" onsubmit="isValid()">
+    <div style="color: blue; font-weight: 600; margin-top: 50px">
+        <lable>Mã khách hàng</lable>
+        <label style="text-align:left; margin-left:30px"><?php echo $cst["MSKH"];?></label>
+    </div>
+    <p class="err">&nbsp</p>
+    <div>
+        <label>Tên khách hàng</label>
+        <input type="text" name="HoTenKH" id="cus_nam" value="<?php echo $cst["HoTenKH"]; ?>">
+    </div>
+    <p id="cus_nam_err" class="err">&nbsp</p>
+    <div>
+        <label>Tên công ty</label>
+        <input type="text" name="TenCongTy" id="cus_ct" value="<?php echo $cst["TenCongTy"]; ?>">
+    </div>
+    <p id="cus_ct_err" class="err">&nbsp</p>
+    <div>
+        <label>Số điện thoại</label>
+        <input type="text" style="width: 40%" name="SoDienThoai" id="cus_sdt" minlength="10" maxlength="10" list="sdt_list" value="<?php echo $cst["SoDienThoai"]; ?>">
+        <datalist id="sdt_list">
+            <?php 
+                foreach ($cstmrs as $value) {
+                    echo sprintf('<option value="%s">%s</option>', $value["SoDienThoai"], $value["SoDienThoai"]);
                 }
             ?>
-        </select>
+        </datalist>
     </div>
-    <p class="err">&nbsp</p>
+    <p id="cus_sdt_err" class="err">&nbsp</p>
     <div>
-        <label>Quy cách</label>
-        <input type="text" name="QuyCach" id="pro_qc" value="<?php echo $item["QuyCach"]; ?>">
+        <label>Email</label>
+        <input type="email" name="Email" id="cus_el" value="<?php echo $cst["Email"]; ?>">
     </div>
-    <p id="pro_qc_err" class="err">&nbsp</p>
+    <p id="cus_el_err" class="err">&nbsp</p>
     <div>
-        <label>Giá</label>
-        <!-- min = 0 chỉ cho phép số dương -->
-        <input type="number" min="0" name="Gia" id="pro_g" value="<?php echo $item["Gia"]; ?>">
-    </div>        
-    <p id="pro_g_err" class="err">&nbsp</p>
-    <div>
-        <label>Số lượng</label>
-        <input type="number" min="0" name="SoLuongHang" id="pro_sl" value="<?php echo $item["SoLuongHang"]; ?>">
+        <label>Địa chỉ</label>
+        <input type="text" name="DiaChi" id="cus_dc" value="<?php echo $cst["DiaChi"]; ?>">
     </div>
-    <p id="pro_sl_err" class="err">&nbsp</p>
-    <div>
-        <label>Ảnh</label>
-        <label for="file-input" style="width:0">
-            <img id="myimage" class="img-dis" style="width:200px" src="<?php echo $img;?>">
-        </label>
-        <input name="Location" type="file" style="display:none" id="file-input" accept="image/*" onchange="onFileSelected(event)"/>
-    </div>
-    <p class="err">&nbsp</p>
-    <div>
-        <label>Ghi chú</label>
-        <textarea name="GhiChu"><?php echo $item["GhiChu"]; ?></textarea>
-    </div>
-    <p class="err">&nbsp</p>
+    <p id="cus_dc_err" class="err">&nbsp</p>
+
     <button class="btn btn-1" type="submit">Sửa</button>
 </form>
 
 <script>
-    /* #region  Kiểm tra hợp lệ */
-    
+
+    // Danh sách khách hàng
+    const cstmrs = <?php echo json_encode($cstmrs) ?>;
+    let $id = <?php echo json_encode($id) ?>;
+
     // Kiểm tra hợp lệ của các trường
-    let pro_nam = document.getElementById("pro_nam");
-    let pro_qc = document.getElementById("pro_qc");
-    let pro_g = document.getElementById("pro_g");
-    let pro_sl = document.getElementById("pro_sl");
+    let cus_nam = document.getElementById("cus_nam");
+    let cus_ct = document.getElementById("cus_ct");
+    let cus_sdt = document.getElementById("cus_sdt");
+    let cus_el = document.getElementById("cus_el");
+    let cus_dc = document.getElementById("cus_dc");
+
+    /* #region  Kiểm tra hợp lệ */
 
     onload = ()=>{
-        pro_qc.addEventListener("keyup", function()
+        cus_ct.addEventListener("keyup", function()
         {
-            validQC();
+            validTenCT();
         });
-        pro_nam.addEventListener("keyup", function()
+        cus_nam.addEventListener("keyup", function()
         {
             validName();
         });
-        pro_g.addEventListener("keyup", function()
+        cus_sdt.addEventListener("keyup", function()
         {
-            validG();
+            validSDT();
         });
-        pro_sl.addEventListener("keyup", function()
+        cus_el.addEventListener("keyup", function()
         {
-            validSL();
+            validEL();
+        });
+        cus_dc.addEventListener("keyup", function()
+        {
+            validDC();
         });
     };
 
     function isValid() {
         // Nếu không hợp lệ
-        let valid = validName() && validQC() && validG() && validSL();
+        let valid = validName() && validTenCT() && validSDT() && validEL() && validDC();
         if (!valid) {
             event.preventDefault();
         }
     }
 
-    function validQC()
+    function validTenCT()
     {
-        if(pro_qc.value === "")
+        if(cus_ct.value === "")
         {
-            pro_qc_err.textContent = "Quy cách không được bỏ trống";
-        }
-        else if(!/^\d\--?\d*\.?\d*$/.test(pro_qc.value))
-        {
-            pro_qc_err.textContent = "Định dạng không hợp lệ (mét - mét/kg)";
+            cus_ct_err.textContent = "Tên công ty không được bỏ trống";
         }
         else {
-            pro_qc_err.textContent = '\xa0';
+            cus_ct_err.textContent = '\xa0';
             return true;
         }
 
@@ -179,32 +153,61 @@
     }
 
     function validName() {
-        if (pro_nam.value === "") {
-            pro_nam_err.textContent = "Tên hàng hóa không được bỏ trống";
+        if (cus_nam.value === "") {
+            cus_nam_err.textContent = "Tên khách hàng không được bỏ trống";
         } else {
-            pro_nam_err.textContent = '\xa0';
+            cus_nam_err.textContent = '\xa0';
             return true;
         }
 
         return false;
     }
 
-    function validG() {
-        if (pro_g.value === "") {
-            pro_g_err.textContent = "Giá không được bỏ trống";
+    function validSDT() {
+        if (cus_sdt.value === "") {
+            cus_sdt_err.textContent = "Số điện thoại được bỏ trống";
+        }
+        else if (cus_sdt.value.length !== 10) {
+            cus_sdt_err.textContent = "Số điện thoại phải đủ 10 số";
+        } 
+        else {
+            let ex = false;
+            for (let i = 0; i < cstmrs.length; i++) {
+                if(cstmrs[i]["SoDienThoai"] === cus_sdt.value && cstmrs[i]["MSKH"] !== $id)
+                {
+                    ex = true;
+                    break;
+                }
+            }
+
+            if(ex){
+                cus_sdt_err.textContent = 'Số điện thoại đã tồn tại vui lòng chọn số khác';
+            }
+            else{
+                cus_sdt_err.textContent = '\xa0';
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function validEL() {
+        if (cus_el.value === "") {
+            cus_el_err.textContent = "Email không được bỏ trống";
         } else {
-            pro_g_err.textContent = '\xa0';
+            cus_el_err.textContent = '\xa0';
             return true;
         }
 
         return false;
     }
 
-    function validSL() {
-        if (pro_sl.value === "") {
-            pro_sl_err.textContent = "Số lượng không được bỏ trống";
+    function validDC() {
+        if (cus_dc.value === "") {
+            cus_dc_err.textContent = "Địa chỉ không được bỏ trống";
         } else {
-            pro_sl_err.textContent = '\xa0';
+            cus_dc_err.textContent = '\xa0';
             return true;
         }
 
@@ -215,7 +218,7 @@
 </script>
 
 <div class="lnk">
-    <a href="delete.php?id=<?php echo $item["MSHH"]; ?>"><h3>Xóa hàng hóa</h3></a>
+    <a href="delete.php?id=<?php echo $cst["MSKH"]; ?>"><h3>Xóa khách hàng</h3></a>
     <a href="manage.php"><h3>Về trang quản lý</h3></a>
 </div>
 <?php

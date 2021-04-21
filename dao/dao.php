@@ -217,22 +217,7 @@ class KhacHangDAO extends DAO
 
         return $cstmrs;
     }
-
-    // public function getKhachHangSDT($SoDienThoai)
-    // {
-    //     $sql = "SELECT * FROM KhachHang kh, DiaChiKH dc WHERE kh.MSKH = dc.MSKH AND kh.SoDienThoai=?";
-    //     $stmt = $this->cnn->prepare($sql);
-    //     $stmt->bind_param("s", $SoDienThoai);
-
-    //     $cstmr = [];
-
-    //     if ($stmt->execute()) {
-    //         $cstmr = $stmt->get_result()->fetch_assoc();
-    //     }
-
-    //     return $cstmr;
-    // }
-
+    
     public function getKhachHang($MSKH)
     {
         $sql = "SELECT * FROM KhachHang kh, DiaChiKH dc WHERE kh.MSKH = dc.MSKH AND kh.MSKH=?";
@@ -246,6 +231,49 @@ class KhacHangDAO extends DAO
         }
 
         return $cstmr;
+    }
+
+    // Cập nhật khách hàng
+    public function updateKhachHang($cst)
+    {
+        // Cập nhật khách hàng
+        $sql = "UPDATE KhachHang SET HoTenKH = ?, TenCongTy = ?, SoDienThoai = ?, Email = ? WHERE MSKH = ?";
+        $stmt = $this->cnn->prepare($sql);
+        $stmt->bind_param("ssssi", $cst["HoTenKH"], $cst["TenCongTy"], $cst["SoDienThoai"], $cst["Email"], $cst["MSKH"]);
+
+        // Cập nhật địa chỉ
+        $sql1 = "UPDATE DiaChiKH SET DiaChi = ? WHERE MaDC = ?;";
+        $stmt1 = $this->cnn->prepare($sql1);
+        $stmt1->bind_param("si", $cst["DiaChi"], $cst["MaDC"]);
+
+        return $stmt->execute() && $stmt1->execute();
+    }
+
+     // Xóa khách hàng
+     public function deleteKhachHang($MSKH)
+     {
+         // Cập nhật khách hàng
+         $sql = "DELETE FROM KhachHang WHERE MSKH = ?";
+         $stmt = $this->cnn->prepare($sql);
+         $stmt->bind_param("i", $MSKH);
+ 
+         // Cập nhật địa chỉ
+         $sql1 = "DELETE FROM DiaChiKH WHERE MSKH = ?;";
+         $stmt1 = $this->cnn->prepare($sql1);
+         $stmt1->bind_param("i", $MSKH);
+ 
+         return $stmt->execute() && $stmt1->execute();
+     }
+
+     // Thêm khách hàng
+     public function addKhachHang($cst)
+    {
+        // Cập nhật khách hàng
+        $sql = "CALL spAddKhachHang(?, ?, ?, ?, ?);";
+        $stmt = $this->cnn->prepare($sql);
+        $stmt->bind_param("sssss", $cst["HoTenKH"], $cst["TenCongTy"], $cst["SoDienThoai"], $cst["Email"], $cst["DiaChi"]);
+        
+        return $stmt->execute();
     }
 }
 

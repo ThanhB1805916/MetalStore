@@ -5,22 +5,16 @@
 <style> 
 #rect {
     animation-name: colorful;
-    animation-duration: 1s;
+    animation-duration: 5s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-out;
   }
 
     @keyframes colorful{
-        0%{
-        background-color: antiquewhite;
-        }
         50%{
-        background-color: #fff;
+            color: red;
         }
-        100%{
-            background-color: #007bff;
-            }    
-        }
+    }
 </style>
 <body>
 <header>

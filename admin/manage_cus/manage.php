@@ -36,7 +36,6 @@
         include_once $_PATH["dao"];
         $dao = new KhacHangDAO();
         $cstmrs = $dao->getDSKhachHang();
-
         $icon = "<img src=\"".$_PATH["ico"]."edit-ico.png\" class=\"ico\">";
         foreach ($cstmrs as $key => $value) {
             echo sprintf(

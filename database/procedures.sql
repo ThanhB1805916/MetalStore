@@ -54,3 +54,31 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+-- Thêm khách hàng
+
+DELIMITER $$
+
+/* Họ tên khách hàng, tên công ty, số điện thoại, email, địa chỉ*/
+CREATE OR REPLACE PROCEDURE spAddKhachHang (HoTenKH NVARCHAR(50), TenCongTy NVARCHAR(30), SoDienThoai CHAR(10), Email VARCHAR(50), dc NVARCHAR(30))
+BEGIN    
+	-- Transaction
+	SET autocommit = 0;
+	
+    -- Lấy ra mã khách hàng
+    SET @mskh = 0;
+    SELECT `AUTO_INCREMENT` INTO @mskh FROM INFORMATION_SCHEMA.TABLES
+    WHERE TABLE_SCHEMA = 'quanlydathang' AND TABLE_NAME = 'khachhang';
+    
+    -- Thêm khách hàng
+   	INSERT INTO KhachHang(HoTenKH, TenCongTy, SoDienThoai, Email)
+	VALUES(HoTenKH, TenCongTy, SoDienThoai, Email);
+    
+    -- Thêm địa chỉ
+    INSERT INTO DiaChiKH(DiaChi, MSKH) VALUES(dc, @mskh);
+    
+    -- Lưu
+    COMMIT;
+END$$
+
+DELIMITER ;
