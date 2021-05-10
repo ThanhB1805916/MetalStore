@@ -1,4 +1,5 @@
 -- Thủ tục thêm hóa đơn
+USE QuanLyDatHang;
 
 DELIMITER $$
 
