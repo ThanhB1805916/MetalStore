@@ -284,8 +284,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && strpos($_SERVER['PHP_SELF'], "creat
             break;
         }
     }
-
-    $MSNV = 1; // TODO: Mã nhân viên nữa sửa 
+    
+    $MSNV = $usr["MSNV"]; 
     $NgayGH = $_POST["NgayGiao"];
     $MSHH = $_POST["MaHang"]; 
     $SoLuongHang = $_POST["SoLuongHang"];

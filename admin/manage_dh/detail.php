@@ -56,6 +56,17 @@
 </div>
 <hr>
 <hr>
+<h2>Nhân viên đặt hàng</h2>
+<div class="dtl" style="display:block">
+    <div>
+        <div>Mã Nhân Viên: <?php echo $item["MSNV"]; ?></div>
+        <div>Họ Tên Nhân Viên: <?php echo $item["HoTenNV"]; ?></div>         
+        <div>Chức vụ: <?php echo $item["ChucVu"]; ?></div>
+    </div>
+</div>
+<hr>
+<hr>
+
 <h2>Hàng hóa</h2>
 <div class="dtl">
     <img class=img-dis src="<?php echo $img;?>">

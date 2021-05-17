@@ -2,13 +2,14 @@
     $title = "Đăng nhập";
     require_once "../layouts/head.php";
 ?>
+
 <div class="lgn-frm need-js">
     <h1>Đăng Nhập</h1>
     <h3 id="noti" class="err"></h3>
     <form method="POST" onsubmit="isValid()">
         <div class="lgn-ipt">
             <span><img src="<?php echo $_PATH["ico"]?>eml-ico.png" class="ico"></span>
-            <input type="email" id="eml" name="email" placeholder="Email">
+            <input type="text" id="msnv" name="msnv" placeholder="Mã nhân viên">
         </div>
         <p id="eml_err" class="err">&nbsp</p>
         <div class="lgn-ipt">
@@ -35,12 +36,12 @@
     }
 
     // Lấy ra trường tài khoản và mật khẩu
-    const eml = doc_id("eml");
+    const msnv = doc_id("msnv");
     const pwd = doc_id("pwd");
 
     // Kiểm tra trong lúc nhập
     onload = ()=>{
-        eml.addEventListener("keyup", function()
+        msnv.addEventListener("keyup", function()
         {
             noti.textContent="";
             validEml();
@@ -54,10 +55,10 @@
     };
 
     function validEml() {
-        if (eml.value == "") {
-            eml_err.textContent = "Email không được để trống";
-        } else if (eml.value.length < 5) {
-            eml_err.textContent = "Email phải dài hơn 5 ký tự";
+        if (msnv.value == "") {
+            eml_err.textContent = "Mã nhân viên không được để trống";
+        } else if (msnv.value.length != 5) {
+            eml_err.textContent = "Mã nhân viên phải đúng 5 ký tự";
         } else {
             eml_err.textContent = '\xa0';
             return true;
@@ -86,16 +87,21 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Xác thực tài khoản
-    $eml = $_POST["email"];
-    $pwd = $_POST["password"];
+    // urllencode https://www.php.net/manual/en/function.urlencode.php https://www.w3schools.com/tags/ref_urlencode.ASP 
+    $msnv = strtolower(urlencode($_POST["msnv"]));
+    $pwd = strtolower(urlencode($_POST["password"]));
 
     // Double check
-    if (isset($eml) && isset($pwd)) {
+    if (isset($msnv) && isset($pwd)) {
+        include_once $_PATH["dao"];
+
         // Lấy ra người dùng theo tài khoản từ csdl
-        $usr = ["eml" => "alex@mail", "pwd" => "1234"];
+        $dao = new EmpDAO();
+        $usr = $dao->getEmpByMSNV($msnv);
+
+        $pwd = md5($pwd.$msnv);
         // Kiểm tra mật khẩu hợp lệ
-        
-        if ($eml === $usr["eml"] && $pwd === $usr["pwd"]) {
+        if ($pwd === $usr["Pwd"]) {
             // Lưu người dùng đang đăng nhập
             $_SESSION["usr"] = $usr;
             // Sang trang chủ

@@ -31,7 +31,7 @@
         
     <!-- Nút đăng xuất -->
     <span class="usr">
-        <span  id="rect">Xin chào: <?php echo $usr["eml"]; ?></span>
+        <span  id="rect">Xin chào: <?php echo $usr["HoTenNV"]; ?></span>
         <form class="lg-btn" method="POST" action="<?php echo $_PATH["layouts"]."header-ad.php"; ?>" onsubmit="IsValid()">
             <button type="submit">Đăng xuất</button>
         </form>

@@ -24,6 +24,27 @@ abstract class DAO
     }
 }
 
+/* #region Emp DAO */
+class EmpDAO extends DAO
+{
+    public function getEmpByMSNV($msnv)
+    {
+        $sql = "SELECT * FROM NhanVien WHERE msnv = ?";
+
+        $stmt = $this->cnn->prepare($sql);
+
+        $stmt->bind_param("s", $msnv);
+
+
+        if ($stmt->execute()) {
+            $emp = $stmt->get_result()->fetch_assoc();
+        }
+
+        return $emp;
+    }
+}
+/* #endregion */
+
 /* #region  Item DAO */
 class ItemDAO extends DAO
 {
@@ -155,8 +176,10 @@ class DatHangDAO extends DAO
 
         $items = [];
 
-        while ($r = $stmt->fetch_assoc()) {
-            $items[] = $r;
+        if($stmt !== false){
+            while ($r = $stmt->fetch_assoc()) {
+                $items[] = $r;
+            }
         }
 
         return $items;
@@ -164,8 +187,8 @@ class DatHangDAO extends DAO
 
     public function getHD($SoDonDH)
     {
-        $sql = "SELECT * FROM LoaiHangHoa as l, HangHoa as hh, ChiTietDathang as ct, Dathang as dt, KhachHang as kh, DiaChiKH as dc
-                WHERE l.MaLoaiHangHoa = hh.MaLoaiHang AND hh.MSHH = ct.MSHH AND ct.SoDonDH = dt.SoDonDH AND dt.MSKH = kh.MSKH
+        $sql = "SELECT * FROM LoaiHangHoa as l, HangHoa as hh, ChiTietDathang as ct, Dathang as dt, KhachHang as kh, DiaChiKH as dc, NhanVien as nv
+                WHERE l.MaLoaiHangHoa = hh.MaLoaiHang AND hh.MSHH = ct.MSHH AND ct.SoDonDH = dt.SoDonDH AND dt.MSKH = kh.MSKH AND dt.msnv = nv.msnv
                 AND kh.MSKH = dc.MSKH AND dt.SoDonDH = ?;";
         $stmt = $this->cnn->prepare($sql);
 
@@ -190,11 +213,12 @@ class DatHangDAO extends DAO
         return $stmt->execute();
     }
 
-    public function creHD($MSKH, $MSNV, $NgayGH, $MSHH, $SoLuongHang, $Gia, $GiamGia){
+    public function creHD($MSKH, $MSNV, $NgayGH, $MSHH, $SoLuongHang, $Gia, $GiamGia)
+    {
         $sql = "CALL spDatHang(?, ?, ?, ?, ?, ?, ?);";
         $stmt = $this->cnn->prepare($sql);
 
-        $stmt->bind_param("iisiidd", $MSKH, $MSNV, $NgayGH, $MSHH, $SoLuongHang, $Gia, $GiamGia);
+        $stmt->bind_param("issiidd", $MSKH, $MSNV, $NgayGH, $MSHH, $SoLuongHang, $Gia, $GiamGia);
 
         return $stmt->execute();
     }
@@ -217,7 +241,7 @@ class KhacHangDAO extends DAO
 
         return $cstmrs;
     }
-    
+
     public function getKhachHang($MSKH)
     {
         $sql = "SELECT * FROM KhachHang kh, DiaChiKH dc WHERE kh.MSKH = dc.MSKH AND kh.MSKH=?";
@@ -249,30 +273,30 @@ class KhacHangDAO extends DAO
         return $stmt->execute() && $stmt1->execute();
     }
 
-     // Xóa khách hàng
-     public function deleteKhachHang($MSKH)
-     {
-         // Cập nhật khách hàng
-         $sql = "DELETE FROM KhachHang WHERE MSKH = ?";
-         $stmt = $this->cnn->prepare($sql);
-         $stmt->bind_param("i", $MSKH);
- 
-         // Cập nhật địa chỉ
-         $sql1 = "DELETE FROM DiaChiKH WHERE MSKH = ?;";
-         $stmt1 = $this->cnn->prepare($sql1);
-         $stmt1->bind_param("i", $MSKH);
- 
-         return $stmt->execute() && $stmt1->execute();
-     }
+    // Xóa khách hàng
+    public function deleteKhachHang($MSKH)
+    {
+        // Cập nhật khách hàng
+        $sql = "DELETE FROM KhachHang WHERE MSKH = ?";
+        $stmt = $this->cnn->prepare($sql);
+        $stmt->bind_param("i", $MSKH);
 
-     // Thêm khách hàng
-     public function addKhachHang($cst)
+        // Cập nhật địa chỉ
+        $sql1 = "DELETE FROM DiaChiKH WHERE MSKH = ?;";
+        $stmt1 = $this->cnn->prepare($sql1);
+        $stmt1->bind_param("i", $MSKH);
+
+        return $stmt->execute() && $stmt1->execute();
+    }
+
+    // Thêm khách hàng
+    public function addKhachHang($cst)
     {
         // Cập nhật khách hàng
         $sql = "CALL spAddKhachHang(?, ?, ?, ?, ?);";
         $stmt = $this->cnn->prepare($sql);
         $stmt->bind_param("sssss", $cst["HoTenKH"], $cst["TenCongTy"], $cst["SoDienThoai"], $cst["Email"], $cst["DiaChi"]);
-        
+
         return $stmt->execute();
     }
 }
