@@ -126,7 +126,9 @@ INSERT INTO DiaChiKH(DiaChi, MSKH)
 VALUES('345 3/2 NK, CT', '2');
 
 -- Nhân viên
+-- pass = 123456
 INSERT INTO NhanVien VALUES('NV001', '32c89ddc3fb0a3f86bf2c8a30037c793', N'THANH Vương', 'Quản lý', '733 NTT NK, CT', '123456789');
+-- pass = 123456
 INSERT INTO NhanVien VALUES('NV002', 'ed3b921e1065e707c9269e373c62306c', N'Alex Vương', 'Quản lý', '933 NTT NK, CT', '123456788');
 
 -- Đặt hàng
