@@ -1,5 +1,5 @@
-# CT428_WEB
+# CT428_WEB_MetalStore
 
 Trang khách hàng chung thư mục với file này
 
-Trang admin trong thư mục admin (CT428_WEB/admin)
+Trang admin trong thư mục admin (/admin)
